@@ -424,7 +424,7 @@ button.tbtn:disabled:hover{background:#1e160a;border-color:var(--gold);color:var
       <div class="header-subtitle">The Old Ways, Reckoned by Sun and Moon</div>
     </div>
     <div style="width:140px;display:flex;justify-content:flex-end;align-items:center">
-      <a href="heathen-calendar-about.html" style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.15em;color:var(--gold);text-decoration:none;text-transform:uppercase;border:1px solid var(--gold);padding:.28rem .7rem;transition:all .2s;white-space:nowrap" onmouseover="this.style.background='rgba(184,134,11,.15)'" onmouseout="this.style.background='transparent'">About & FAQ</a>
+      <a href="about.html" style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.15em;color:var(--gold);text-decoration:none;text-transform:uppercase;border:1px solid var(--gold);padding:.28rem .7rem;transition:all .2s;white-space:nowrap" onmouseover="this.style.background='rgba(184,134,11,.15)'" onmouseout="this.style.background='transparent'">About & FAQ</a>
     </div>
   </div>
 </div>
@@ -472,7 +472,7 @@ button.tbtn:disabled:hover{background:#1e160a;border-color:var(--gold);color:var
   <div class="footer-quote">"The sun, the sister of the moon, from the south her right hand cast over heaven's rim; no knowledge she had where her home should be, the moon knew not what might was his, the stars knew not where their stations were."</div>
   <div class="footer-credit">— Völuspá, Stanza 5 · Calendar system by S. Holt</div>
   <div style="margin-top:.75rem;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;color:var(--gold);opacity:.5;text-transform:uppercase">
-    More features coming soon — <a href="heathen-calendar-about.html" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">learn what's planned</a>
+    More features coming soon — <a href="about.html" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">learn what's planned</a>
   </div>
   <div style="margin-top:.5rem;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.12em;color:var(--moon-silver);opacity:.35;text-transform:uppercase">
     &copy; <span id="copy-year"></span> Drengskapr Viking Spirit, LLC · All Rights Reserved
@@ -514,7 +514,7 @@ function fullMoonJD(k){const kf=k+0.5;const T=kf/1236.85;const T2=T*T;let JDE=24
 function getSolarEvent(year,eventType){const Y=(year-2000)/1000;const Y2=Y*Y;const Y3=Y2*Y;const Y4=Y3*Y;const bases=[2451623.80984+365242.37404*Y+0.05169*Y2-0.00411*Y3-0.00057*Y4,2451716.56767+365241.62603*Y+0.00325*Y2+0.00888*Y3-0.00030*Y4,2451810.21715+365242.01767*Y-0.11575*Y2+0.00337*Y3+0.00078*Y4,2451900.05952+365242.74049*Y-0.06223*Y2-0.00823*Y3+0.00032*Y4];let JDE0=bases[eventType];const T=(JDE0-2451545.0)/36525;const W=deg2rad(35999.373*T-2.47);const delta=1+0.0334*Math.cos(W)+0.0007*Math.cos(2*W);const S=485*Math.cos(deg2rad(324.96+1934.136*T))+203*Math.cos(deg2rad(337.23+32964.467*T))+199*Math.cos(deg2rad(342.08+20.186*T))+182*Math.cos(deg2rad(27.85+445267.112*T))+156*Math.cos(deg2rad(73.14+45036.886*T))+136*Math.cos(deg2rad(171.52+22518.443*T))+77*Math.cos(deg2rad(222.54+65928.934*T))+74*Math.cos(deg2rad(296.72+3034.906*T))+70*Math.cos(deg2rad(243.58+9037.513*T))+58*Math.cos(deg2rad(119.81+33718.147*T))+52*Math.cos(deg2rad(297.17+150.678*T))+50*Math.cos(deg2rad(21.02+2281.226*T));return JDE0+(0.00001*S)/delta}
 function getNextNewMoonAfter(afterJD){const refJD=2451550.09766;let k=Math.floor((afterJD-refJD)/29.530588861);for(let i=0;i<5;i++){const jd=newMoonJD(k+i);if(jd>afterJD)return jd}return afterJD+29.5}
 function getFullMoonAfter(afterJD){const refJD=2451550.09766;let k=Math.floor((afterJD-refJD)/29.530588861);for(let i=0;i<5;i++){const jd=fullMoonJD(k+i);if(jd>afterJD)return jd}return afterJD+14.75}
-function todayJD(){const n=new Date();return julianDay(n.getFullYear(),n.getMonth()+1,n.getDate())}
+function todayJD(){const n=new Date();return julianDay(n.getFullYear(),n.getMonth()+1,n.getDate())+0.5}
 
 /* ════════════════════════════════════════════
    MONTH NAME DATA
