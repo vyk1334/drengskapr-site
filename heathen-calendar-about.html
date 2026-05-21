@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About & FAQ — Heathen Lunisolar Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --parchment:#f4ead5; --parchment-dark:#e8d9b8;
+  --parchment-mid:#ede0c4; --gold:#b8860b; --gold-bright:#d4a017;
+  --gold-pale:#f0d080; --rune-blue:#2a4a6b; --winter:#2a4a6b;
+  --summer:#5a7a2b; --blot-red:#8b1a1a; --moon-silver:#c8c0b0;
+  --text-body:#2a1f0e; --text-muted:#6b5a3e;
+  --border:#c8a96e; --border-light:#ddc898;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Crimson Pro',Georgia,serif;background:var(--ink);color:var(--text-body);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:100;mix-blend-mode:multiply}
+
+/* ── HEADER ── */
+#app-header{background:linear-gradient(180deg,#0d0a06 0%,#1a1208 60%,#2a1f0e 100%);border-bottom:2px solid var(--gold);padding:1.2rem 2rem 0.9rem;position:relative;overflow:hidden}
+#app-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,134,11,.15) 0%,transparent 70%);pointer-events:none}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.header-runes{text-align:center;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;color:var(--gold);opacity:.4;margin-bottom:.4rem}
+.header-title{font-family:'Cinzel',serif;font-weight:900;font-size:clamp(1.3rem,3vw,2.2rem);color:var(--gold-bright);letter-spacing:.1em;text-transform:uppercase;line-height:1;text-shadow:0 0 40px rgba(212,160,23,.4)}
+.header-subtitle{font-family:'Crimson Pro',serif;font-size:.82rem;font-style:italic;color:var(--moon-silver);opacity:.65;letter-spacing:.15em;margin-top:.2rem}
+.header-nav{display:flex;gap:.75rem;align-items:center;flex-shrink:0}
+.header-nav a{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.15em;color:var(--gold);text-decoration:none;text-transform:uppercase;border:1px solid var(--gold);padding:.28rem .7rem;transition:all .2s;white-space:nowrap}
+.header-nav a:hover{background:rgba(184,134,11,.15)}
+.header-nav a.active{background:var(--gold);color:var(--ink)}
+
+/* ── PAGE LAYOUT ── */
+#page-body{background:var(--parchment);min-height:calc(100vh - 200px)}
+
+/* ── HERO BAND ── */
+.hero-band{background:linear-gradient(135deg,#0d0a06 0%,#1e150a 50%,#2a1f0e 100%);border-bottom:1px solid var(--gold);padding:3rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero-band::before{content:'ᛟ';position:absolute;font-size:18rem;color:rgba(184,134,11,.04);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;line-height:1}
+.hero-rune{font-family:'Cinzel',serif;font-size:2.5rem;color:var(--gold);opacity:.6;display:block;margin-bottom:.75rem}
+.hero-title{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(1.4rem,4vw,2.4rem);color:var(--gold-bright);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem}
+.hero-body{font-family:'Crimson Pro',serif;font-size:1.15rem;color:var(--moon-silver);max-width:680px;margin:0 auto;line-height:1.75;font-style:italic}
+
+/* ── CONTENT SECTIONS ── */
+.content-wrap{max-width:840px;margin:0 auto;padding:3rem 1.5rem 4rem}
+
+.section{margin-bottom:3rem}
+.section-divider{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.section-title{font-family:'Cinzel',serif;font-weight:700;font-size:1.25rem;color:var(--ink);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+
+.prose{font-family:'Crimson Pro',serif;font-size:1.08rem;color:var(--text-body);line-height:1.85}
+.prose p{margin-bottom:1rem}
+.prose p:last-child{margin-bottom:0}
+.prose strong{font-weight:600;color:var(--ink)}
+
+/* ── FEATURE CARDS ── */
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem;margin-top:1.2rem}
+.feature-card{background:var(--parchment-mid);border:1px solid var(--border);padding:1rem 1.1rem}
+.feature-card-icon{font-size:1.4rem;margin-bottom:.4rem;display:block}
+.feature-card-title{font-family:'Cinzel',serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:.35rem}
+.feature-card-body{font-family:'Crimson Pro',serif;font-size:.92rem;color:var(--text-muted);line-height:1.55}
+
+/* ── COMING SOON ── */
+.coming-soon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;margin-top:1.2rem}
+.cs-card{border:1px solid var(--border-light);padding:.85rem 1rem;background:var(--parchment);position:relative;overflow:hidden}
+.cs-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.cs-card-tier{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem}
+.cs-card-title{font-family:'Cinzel',serif;font-size:.78rem;font-weight:600;letter-spacing:.06em;color:var(--ink);margin-bottom:.3rem}
+.cs-card-body{font-family:'Crimson Pro',serif;font-size:.88rem;color:var(--text-muted);line-height:1.5}
+.cs-card.tier2::before{background:var(--rune-blue)}
+.cs-card.tier3::before{background:var(--summer)}
+.cs-card-tier.t2{color:var(--rune-blue)}
+.cs-card-tier.t3{color:var(--summer)}
+
+/* ── BLOT TABLE ── */
+.blot-table{width:100%;border-collapse:collapse;margin-top:1rem;font-family:'Crimson Pro',serif;font-size:1rem}
+.blot-table th{background:var(--ink);color:var(--gold-bright);font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.55rem .75rem;text-align:left;border-bottom:2px solid var(--gold)}
+.blot-table td{padding:.55rem .75rem;border-bottom:1px solid var(--border-light);color:var(--text-body);line-height:1.5;vertical-align:top}
+.blot-table tr:last-child td{border-bottom:none}
+.blot-table tr:nth-child(even) td{background:var(--parchment-dark)}
+.blot-name{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;color:var(--blot-red);letter-spacing:.04em}
+
+/* ── FAQ ── */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-bottom:1px solid var(--border-light)}
+.faq-item:first-child{border-top:1px solid var(--border-light)}
+.faq-q{font-family:'Cinzel',serif;font-size:.88rem;font-weight:600;letter-spacing:.04em;color:var(--ink);padding:1rem 1.1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:background .15s;user-select:none}
+.faq-q:hover{background:var(--parchment-dark)}
+.faq-q-text{flex:1}
+.faq-chevron{font-size:.7rem;color:var(--gold);flex-shrink:0;transition:transform .2s}
+.faq-item.open .faq-chevron{transform:rotate(90deg)}
+.faq-a{font-family:'Crimson Pro',serif;font-size:1rem;color:var(--text-body);line-height:1.75;padding:0 1.1rem 1rem;display:none}
+.faq-a p{margin-bottom:.65rem}
+.faq-a p:last-child{margin-bottom:0}
+.faq-item.open .faq-a{display:block}
+
+/* ── MONTH NAMES TABLE ── */
+.month-table{width:100%;border-collapse:collapse;margin-top:1rem;font-family:'Crimson Pro',serif;font-size:.95rem}
+.month-table th{background:var(--ink);color:var(--gold-bright);font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;padding:.5rem .75rem;text-align:left;border-bottom:2px solid var(--gold)}
+.month-table td{padding:.45rem .75rem;border-bottom:1px solid var(--border-light);vertical-align:top;line-height:1.5}
+.month-table tr:last-child td{border-bottom:none}
+.month-table tr:nth-child(even) td{background:var(--parchment-dark)}
+.month-table td:first-child{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;color:var(--rune-blue);white-space:nowrap}
+.month-table tr.summer-row td:first-child{color:var(--summer)}
+.month-table td.intercalary{font-family:'Cinzel',serif;font-size:.72rem;color:var(--gold);font-style:italic}
+
+/* ── CALL TO ACTION ── */
+.cta-band{background:linear-gradient(135deg,#0d0a06 0%,#1e150a 100%);border:1px solid var(--gold);padding:2rem;text-align:center;margin-top:2rem}
+.cta-title{font-family:'Cinzel',serif;font-weight:700;font-size:1.3rem;color:var(--gold-bright);letter-spacing:.08em;margin-bottom:.6rem}
+.cta-body{font-family:'Crimson Pro',serif;font-size:1rem;color:var(--moon-silver);margin-bottom:1.2rem;line-height:1.65}
+.cta-btn{display:inline-block;background:var(--gold);color:var(--ink);font-family:'Cinzel',serif;font-weight:700;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;padding:.65rem 1.6rem;text-decoration:none;transition:all .2s}
+.cta-btn:hover{background:var(--gold-bright)}
+
+/* ── FOOTER ── */
+#app-footer{background:var(--ink);border-top:1px solid var(--gold);padding:1.2rem 1.5rem;text-align:center}
+.footer-quote{font-family:'Crimson Pro',serif;font-style:italic;font-size:.82rem;color:var(--moon-silver);opacity:.55;max-width:600px;margin:0 auto .5rem;line-height:1.5}
+.footer-credit{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;color:var(--gold);opacity:.45;text-transform:uppercase;margin-bottom:.35rem}
+.footer-copy{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.12em;color:var(--moon-silver);opacity:.3;text-transform:uppercase}
+
+@media(max-width:600px){
+  .content-wrap{padding:2rem 1rem 3rem}
+  .hero-band{padding:2rem 1rem}
+  .header-inner{flex-direction:column;gap:.6rem;text-align:center}
+  .header-nav{justify-content:center}
+  .feature-grid,.coming-soon-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div id="app-header">
+  <div class="header-runes">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛊ ᛏ ᛒ ᛖ ᛗ ᛚ ᛜ ᛞ ᛟ</div>
+  <div class="header-inner">
+    <div style="flex:1"></div>
+    <div style="text-align:center">
+      <div class="header-title">Heathen Lunisolar Calendar</div>
+      <div class="header-subtitle">The Old Ways, Reckoned by Sun and Moon</div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:flex-end">
+      <div class="header-nav">
+        <a href="heathen-calendar-v1.html">Calendar</a>
+        <a href="about.html" class="active">About & FAQ</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div class="hero-band">
+  <span class="hero-rune">ᛟ</span>
+  <div class="hero-title">What is the Heathen Lunisolar Calendar?</div>
+  <div class="hero-body">An attempt to reclaim the old reckoning — blending the pre-Christian Northern European lunisolar calendar with the modern solar calendar, so that Heathens and those drawn to the old ways can track the sacred year as their ancestors did: by the turning of the moon and the station of the sun.</div>
+</div>
+
+<div id="page-body">
+<div class="content-wrap">
+
+  <!-- ══ ABOUT ══ -->
+  <div class="section">
+    <div class="section-divider"><span class="section-title">About This Calendar</span></div>
+    <div class="prose">
+      <p>This calendar is an original creation by <strong>S. Holt</strong>, developed over several years of research into pre-Christian Northern European timekeeping. It is not a recreation of any single historical calendar — no such complete record survives — but rather a thoughtful synthesis of available academic work, linguistic sources, and the internal logic of a lunisolar system.</p>
+      <p>The core idea is simple: the ancestors of the Norse, Germanic, and Anglo-Saxon peoples tracked time by the moon, not the sun. Each month began with the first visible crescent — what this calendar calls the <strong>"spark"</strong> of the new moon — and the great seasonal festivals were tied to the full moon following each solstice or equinox. This calendar standardises the spark as <strong>two days after the astronomical new moon</strong>, making it reproducible and consistent across years.</p>
+      <p>The calendar is published by <strong>Drengskapr Viking Spirit, LLC</strong> and is offered freely in this form. A full-featured version with calendar integration, event tracking, and customisation is in development.</p>
+    </div>
+  </div>
+
+  <!-- ══ HOW IT WORKS ══ -->
+  <div class="section">
+    <div class="section-divider"><span class="section-title">How It Works</span></div>
+    <div class="prose">
+      <p><strong>Two seasons, not four.</strong> The Heathen year has only two halves: Winter (the dark half, beginning at Winter Nights) and Summer (the light half, beginning at Sigurblót). The familiar four-season model came later with the Roman solar calendar.</p>
+      <p><strong>The year begins with Winter Nights.</strong> The Heathen year starts with the lunar month whose spark falls after the first new moon following the Autumnal Equinox — roughly October in modern terms. This is when Winter Nights is celebrated.</p>
+      <p><strong>Months follow the moon.</strong> Each of the 12 (sometimes 13) months begins two days after the new moon. Most years have 12 lunar months; approximately every two and a half years, a 13th month is needed to keep the lunar calendar from drifting away from the solar year. That extra month is called <strong>Sumarauki</strong> (Summer's Extension) in the Northern Hemisphere, and <strong>Vetrauki</strong> (Winter's Extension) in the Southern.</p>
+      <p><strong>Blóts follow the solstices and equinoxes.</strong> Each of the four great blóts falls on the full moon of the lunar month <em>following</em> the relevant solstice or equinox — not on the solstice/equinox itself. This means the blot date shifts from year to year, as the moon moves against the sun.</p>
+      <p><strong>Both hemispheres supported.</strong> In the Southern Hemisphere, the seasons are reversed. What is the Autumnal Equinox in the north is the Spring Equinox in the south, so the calendar inverts accordingly — Winter Nights in the south falls in April, not October.</p>
+    </div>
+  </div>
+
+  <!-- ══ THE MONTHS ══ -->
+  <div class="section">
+    <div class="section-divider"><span class="section-title">The Months</span></div>
+    <div class="prose"><p>The month names used in this calendar are drawn primarily from Old Norse and Old Icelandic sources. Many alternatives exist across different times and regions — the full-featured version will allow users to switch between name sets or create their own.</p></div>
+    <table class="month-table">
+      <thead><tr><th>Month</th><th>Meaning</th><th>Season</th><th>Approx. Gregorian</th></tr></thead>
+      <tbody>
+        <tr><td>HaustManuðr</td><td>Harvest Month</td><td>Winter</td><td>Oct – Nov</td></tr>
+        <tr><td>GorManuðr</td><td>Slaughter Month</td><td>Winter</td><td>Nov – Dec</td></tr>
+        <tr><td>Yulir Tungl</td><td>Yule Moon</td><td>Winter</td><td>Nov – Jan</td></tr>
+        <tr><td>JolManuðr</td><td>Yule Month</td><td>Winter</td><td>Jan – Feb</td></tr>
+        <tr><td>Mörsugur</td><td>Fat-Sucking Month</td><td>Winter</td><td>Feb – Mar</td></tr>
+        <tr><td>GoaManuðr</td><td>Gói's Month</td><td>Winter</td><td>Feb – Apr</td></tr>
+        <tr class="summer-row"><td>EinMánuður</td><td>First Month</td><td>Summer</td><td>Apr – May</td></tr>
+        <tr class="summer-row"><td>HarpaMánuður</td><td>Harpa's Month</td><td>Summer</td><td>May – Jun</td></tr>
+        <tr class="summer-row"><td>SkerplaMánuður</td><td>Skerpla's Month</td><td>Summer</td><td>May – Jul</td></tr>
+        <tr class="summer-row"><td>SolMánuður</td><td>Sun Month</td><td>Summer</td><td>Jun – Aug</td></tr>
+        <tr class="summer-row"><td><span class="intercalary">Sumarauki</span></td><td>Summer's Extension</td><td>Summer</td><td>Jul – Sep <em>(13-month years only)</em></td></tr>
+        <tr class="summer-row"><td>Heyannir</td><td>Hay Month</td><td>Summer</td><td>Aug – Sep</td></tr>
+        <tr class="summer-row"><td>Tvímánuður</td><td>Second Month</td><td>Summer</td><td>Sep – Oct</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ THE BLÓTS ══ -->
+  <div class="section">
+    <div class="section-divider"><span class="section-title">The Four Great Blóts</span></div>
+    <div class="prose"><p>The four blóts attested in the primary sources are the cornerstones of the Heathen ritual year. Each is celebrated over three days, centred on the full moon of the lunar month following its respective solstice or equinox.</p></div>
+    <table class="blot-table">
+      <thead><tr><th>Blót</th><th>Trigger</th><th>Meaning &amp; Associations</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="blot-name">Winter Nights</span></td>
+          <td>Full moon of the month after the Autumnal Equinox</td>
+          <td>Marks the start of the Heathen year and the dark half. A time for honouring the dísir (female ancestral spirits), the Vanir, and the harvest. The veil between worlds is thin.</td>
+        </tr>
+        <tr>
+          <td><span class="blot-name">Yule / Midwinter</span></td>
+          <td>Full moon of the month after the Winter Solstice</td>
+          <td>The great midwinter feast. Honouring Odin and the Wild Hunt, the return of the sun, and the ancestors. The Yule log, the evergreen, the gift — all find their roots here.</td>
+        </tr>
+        <tr>
+          <td><span class="blot-name">Sigurblót</span></td>
+          <td>Full moon of the month after the Spring Equinox</td>
+          <td>The victory blót, marking the start of summer. Sacred to Odin and Freyr, it was a time for warriors to make offerings before the raiding and trading season began.</td>
+        </tr>
+        <tr>
+          <td><span class="blot-name">Midsummer</span></td>
+          <td>Full moon of the month after the Summer Solstice</td>
+          <td>The height of the sun's power. A blót for Freyr and the fertility of the land, for good crops, good sailing, and the abundance of summer. Fires are lit and the night is celebrated.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ CURRENT FEATURES ══ -->
+  <div class="section">
+    <div class="section-divider"><span class="section-title">What's Available Now</span></div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-card-icon">📅</span>
+        <div class="feature-card-title">Four Views</div>
+        <div class="feature-card-body">Day, Week, Month, and Year views. Navigate by day, week, or lunar month. Jump to any date instantly.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">🌕</span>
+        <div class="feature-card-title">Accurate Moon Phases</div>
+        <div class="feature-card-body">Full moon dates are calculated astronomically using the Jean Meeus algorithm — not approximated. Accurate for any year.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">🔥</span>
+        <div class="feature-card-title">All Four Blóts</div>
+        <div class="feature-card-body">Winter Nights, Yule/Midwinter, Sigurblót, and Midsummer are marked correctly each year, with their 3-day windows highlighted.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">☀️</span>
+        <div class="feature-card-title">Solstices &amp; Equinoxes</div>
+        <div class="feature-card-body">The four solar turning points are marked on the calendar each year, showing the astronomical basis for each blót.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">🌍</span>
+        <div class="feature-card-title">Both Hemispheres</div>
+        <div class="feature-card-body">Southern Hemisphere users can flip the calendar — seasons and blóts invert correctly. Sumarauki becomes Vetrauki.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">🖨️</span>
+        <div class="feature-card-title">Print to PDF</div>
+        <div class="feature-card-body">Print a full year to PDF from the Year view — one month per page, landscape, with all dates, events, and blóts included.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ COMING SOON ══ -->
+  <div class="section">
+    <div class="section-divider"><span class="section-title">What's Coming</span></div>
+    <div class="prose"><p>This is a teaser release. The full version is in active development and will launch with several tiers of features. Here is a preview of what's planned.</p></div>
+    <div class="coming-soon-grid">
+      <div class="cs-card">
+        <div class="cs-card-tier">Coming — All Users</div>
+        <div class="cs-card-title">Mobile Apps</div>
+        <div class="cs-card-body">Native iOS and Android apps for the Heathen Calendar, available on the App Store and Google Play.</div>
+      </div>
+      <div class="cs-card">
+        <div class="cs-card-tier">Coming — All Users</div>
+        <div class="cs-card-title">Accounts &amp; Sync</div>
+        <div class="cs-card-body">Create an account to save your preferences, hemisphere, and view settings across devices.</div>
+      </div>
+      <div class="cs-card tier2">
+        <div class="cs-card-tier t2">Völva Tier — Paid</div>
+        <div class="cs-card-title">Calendar Export</div>
+        <div class="cs-card-body">Export blóts, full moons, and month beginnings to Google Calendar, Apple Calendar, and Proton Calendar.</div>
+      </div>
+      <div class="cs-card tier2">
+        <div class="cs-card-tier t2">Völva Tier — Paid</div>
+        <div class="cs-card-title">Add Custom Events</div>
+        <div class="cs-card-body">Add your own events to the Heathen Calendar and keep them alongside the traditional observances.</div>
+      </div>
+      <div class="cs-card tier3">
+        <div class="cs-card-tier t3">Goði Tier — Paid</div>
+        <div class="cs-card-title">Rename Months</div>
+        <div class="cs-card-body">Prefer a different set of month names? Choose from historical alternatives or create your own for each month.</div>
+      </div>
+      <div class="cs-card tier3">
+        <div class="cs-card-tier t3">Goði Tier — Paid</div>
+        <div class="cs-card-title">Custom Blót Timing</div>
+        <div class="cs-card-body">Move blóts to different days — on the solstice itself, or at the new moon — to match your tradition or kindred's practice.</div>
+      </div>
+      <div class="cs-card tier3">
+        <div class="cs-card-tier t3">Goði Tier — Paid</div>
+        <div class="cs-card-title">Two-Way Calendar Sync</div>
+        <div class="cs-card-body">Link your Google, Apple, or Proton calendar so events flow both ways — Heathen dates appear in your phone calendar, and your events appear here.</div>
+      </div>
+      <div class="cs-card tier3">
+        <div class="cs-card-tier t3">Goði Tier — Paid</div>
+        <div class="cs-card-title">Additional Blóts</div>
+        <div class="cs-card-body">Add lesser-attested blóts and observances from your region or tradition — Dísablót, Álfablót, Þorrablót, and more.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FAQ ══ -->
+  <div class="section">
+    <div class="section-divider"><span class="section-title">Frequently Asked Questions</span></div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">Is this calendar historically accurate?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>It is as historically grounded as the surviving evidence allows, while also being practical and usable. No complete pre-Christian Northern European lunisolar calendar has survived — what we have are fragments: month names recorded by later Christian scholars, references to seasonal festivals in the sagas, and descriptions of the blót calendar in Snorri's Ynglinga saga and similar sources.</p>
+          <p>This calendar takes those fragments seriously and builds a coherent system around them, using the same underlying logic — lunar months, solar turning points, a year that begins in autumn — that all available evidence points to. Where choices had to be made (such as the "spark" rule of two days after the new moon), they are made transparently and consistently.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">Why do the blót dates change every year?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>Because they are tied to the moon, not to a fixed date on the solar calendar. The full moon of a given lunar month falls on a different Gregorian date each year — just as Easter (which also follows a lunisolar calculation) shifts around the calendar.</p>
+          <p>This is intentional and historically authentic. The old peoples did not celebrate Yule on December 25th — they celebrated it when the moon was full in the lunar month following the Winter Solstice. The date moved. The moon was the clock.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">What is a blót?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>A blót (pronounced roughly "bloat," from Old Norse) is a sacrificial offering or sacred feast. In pre-Christian Norse and Germanic practice, the blóts were the great communal religious gatherings of the year — occasions for sacrifice to the gods, feasting, drinking, and renewing bonds between the community and the divine.</p>
+          <p>In modern Heathen practice, blóts take many forms — from formal outdoor ceremonies with mead and offerings, to quiet home observances. The calendar marks them as three-day events (the eve, the main day, and the day after) to allow for different traditions of observance.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">What is the "spark" of the month?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>The spark is Day 1 of each Heathen month — the beginning of the new lunar cycle. Historically, a new month likely began when the first thin crescent of the new moon was visible after the dark of the moon. This calendar standardises that as two days after the astronomical new moon (the moment of exact conjunction, when the moon is invisible), which reliably corresponds to when the crescent first becomes visible to the naked eye.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">Why are there sometimes 13 months?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>The lunar year (12 lunar months) is about 11 days shorter than the solar year. Without correction, the lunar calendar would drift backward through the seasons — Winter Nights would eventually fall in summer. To prevent this, roughly every two and a half years an extra month is inserted. This is called intercalation, and virtually all historical lunisolar calendars (Hebrew, Babylonian, Celtic) use the same technique.</p>
+          <p>In this calendar, the intercalary month is called <strong>Sumarauki</strong> (Summer's Extension) in the Northern Hemisphere and <strong>Vetrauki</strong> (Winter's Extension) in the Southern. It is inserted after SolMánuður, in the heart of summer.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">Does this work for the Southern Hemisphere?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>Yes. Toggle the hemisphere selector in the toolbar. The calendar inverts the seasons completely: what triggers Winter Nights in the north (the Autumnal Equinox) is the Spring Equinox in the south, so the year begins in April rather than October. Midsummer falls in January, Yule in July. The moon phases are identical in both hemispheres — only the seasonal associations and blót triggers change.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">Do I have to be a Heathen or Norse Pagan to use this?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>Not at all. This calendar will be useful to anyone interested in pre-Christian Northern European traditions, folk practices, ancestral timekeeping, or simply a different way of orienting to the year. Many users find that living by the moon — watching it grow and fade each month, knowing which blót is approaching — changes how they experience time in a meaningful way, regardless of their specific spiritual practice.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">How is the moon calculated?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>New moon and full moon dates are calculated using the astronomical algorithms published by Jean Meeus in <em>Astronomical Algorithms</em> (2nd ed., 1998) — the same methods used by planetarium software and astronomical organisations. The solstice and equinox dates use Meeus's Chapter 27 method. All calculations happen in your browser with no external data source required, and are accurate for any year from roughly 1000 CE to 3000 CE.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">Will there be a phone app?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>Yes, that is planned. iOS and Android apps are on the roadmap, to be released after the full web version launches. The apps will share the same calendar engine and data as the web version, so everything stays in sync.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">How can I support this project?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>The best thing you can do right now is share the calendar with people who might find it useful — other Heathens, practitioners, students of Norse history, or anyone drawn to the old ways. The more people who use it and give feedback, the better it gets.</p>
+          <p>If you'd like to support the creator directly: <strong>Venmo: @SHolt45 · PayPal: @Holt45</strong></p>
+          <p>Paid subscription tiers are coming — they will fund ongoing development, server costs, and the mobile apps.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-text">Who made this?</span>
+          <span class="faq-chevron">▸</span>
+        </div>
+        <div class="faq-a">
+          <p>The Heathen Lunisolar Calendar was created by <strong>S. Holt</strong> and is published by <strong>Drengskapr Viking Spirit, LLC</strong>. Drengskapr (Old Norse for the quality of being a true, honourable, courageous person — a drengr) is dedicated to authentic engagement with Northern European heritage and spiritual tradition. This calendar is one of several projects in development under that banner.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ CTA ══ -->
+  <div class="cta-band">
+    <div class="cta-title">Ready to Reckon by the Old Way?</div>
+    <div class="cta-body">The calendar is free to use, works in your browser, supports both hemispheres, and requires no account or download. Open it and find out what moon you're living under.</div>
+    <a href="heathen-calendar-v1.html" class="cta-btn">Open the Calendar ✦</a>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div id="app-footer">
+  <div class="footer-quote">"The sun, the sister of the moon, from the south her right hand cast over heaven's rim; no knowledge she had where her home should be, the moon knew not what might was his, the stars knew not where their stations were."</div>
+  <div class="footer-credit">— Völuspá, Stanza 5 · Calendar system by S. Holt</div>
+  <div class="footer-copy">&copy; <span id="copy-year"></span> Drengskapr Viking Spirit, LLC · All Rights Reserved</div>
+</div>
+
+<script>
+// Auto-fill copyright year
+document.getElementById('copy-year').textContent = new Date().getFullYear();
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    // Re-open if it wasn't open
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

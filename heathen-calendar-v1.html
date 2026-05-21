@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heathen Lunisolar Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --parchment:#f4ead5; --parchment-dark:#e8d9b8;
+  --parchment-mid:#ede0c4; --gold:#b8860b; --gold-bright:#d4a017;
+  --gold-pale:#f0d080; --rune-blue:#2a4a6b; --winter:#2a4a6b;
+  --summer:#5a7a2b; --blot-red:#8b1a1a; --moon-silver:#c8c0b0;
+  --text-body:#2a1f0e; --text-muted:#6b5a3e;
+  --border:#c8a96e; --border-light:#ddc898;
+  --tier-free:#6b5a3e; --tier-1:#b8860b; --tier-2:#2a4a6b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Crimson Pro',Georgia,serif;background:var(--ink);color:var(--text-body);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;mix-blend-mode:multiply}
+
+/* ── HEADER ── */
+#app-header{background:linear-gradient(180deg,#0d0a06 0%,#1a1208 60%,#2a1f0e 100%);border-bottom:2px solid var(--gold);padding:1.2rem 2rem 0.9rem;position:relative;overflow:hidden}
+#app-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,134,11,.15) 0%,transparent 70%);pointer-events:none}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.header-center{flex:1;text-align:center}
+.header-runes{text-align:center;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;color:var(--gold);opacity:.4;margin-bottom:.4rem}
+.header-title{font-family:'Cinzel',serif;font-weight:900;font-size:clamp(1.3rem,3vw,2.2rem);color:var(--gold-bright);letter-spacing:.1em;text-transform:uppercase;line-height:1;text-shadow:0 0 40px rgba(212,160,23,.4),0 2px 4px rgba(0,0,0,.8)}
+.header-subtitle{font-family:'Crimson Pro',serif;font-size:.82rem;font-style:italic;color:var(--moon-silver);opacity:.65;letter-spacing:.15em;margin-top:.2rem}
+.header-tier-badge{display:none}
+
+/* ── TOOLBAR ── */
+#toolbar{background:#140f07;border-bottom:1px solid var(--gold);padding:.6rem 1.2rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;justify-content:space-between}
+.toolbar-left,.toolbar-right{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.ctrl-label{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;white-space:nowrap}
+select,button.tbtn{background:#1e160a;border:1px solid var(--gold);color:var(--parchment);font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.08em;padding:.3rem .55rem;cursor:pointer;transition:all .2s;appearance:none;-webkit-appearance:none}
+select{padding-right:1.4rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b8860b'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .4rem center;background-size:8px}
+select:hover,button.tbtn:hover{background:#2a1f0e;border-color:var(--gold-bright);color:var(--gold-pale)}
+button.tbtn.accent{background:var(--gold);border-color:var(--gold-bright);color:var(--ink);font-weight:700}
+button.tbtn.accent:hover{background:var(--gold-bright)}
+button.tbtn:disabled{opacity:.4;cursor:not-allowed}
+button.tbtn:disabled:hover{background:#1e160a;border-color:var(--gold);color:var(--parchment)}
+.view-tabs{display:flex;border:1px solid var(--gold);overflow:hidden}
+.view-tabs button{background:#1e160a;border:none;border-right:1px solid var(--gold);color:var(--text-muted);font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.1em;padding:.3rem .7rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.view-tabs button:last-child{border-right:none}
+.view-tabs button.active{background:var(--gold);color:var(--ink);font-weight:700}
+.view-tabs button:hover:not(.active){background:#2a1f0e;color:var(--gold-pale)}
+.hem-toggle{display:flex;border:1px solid var(--gold);overflow:hidden}
+.hem-toggle button{background:#1e160a;border:none;border-right:1px solid var(--gold);color:var(--text-muted);font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.hem-toggle button:last-child{border-right:none}
+.hem-toggle button.active{background:var(--gold);color:var(--ink);font-weight:700}
+.hem-toggle button:hover:not(.active){background:#2a1f0e;color:var(--gold-pale)}
+
+/* ── BLOTS STRIP ── */
+#blots-strip{background:#100c05;border-bottom:1px solid var(--gold);padding:.4rem 1.2rem;display:flex;gap:2rem;overflow-x:auto;scrollbar-width:none;align-items:center}
+#blots-strip::-webkit-scrollbar{display:none}
+.blot-chip{display:flex;flex-direction:column;align-items:center;gap:.05rem;flex-shrink:0;cursor:pointer}
+.blot-chip:hover .blot-chip-name{color:var(--gold-pale)}
+.blot-chip-name{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.14em;color:var(--gold-bright);text-transform:uppercase;transition:color .15s}
+.blot-chip-date{font-family:'Crimson Pro',serif;font-size:.72rem;color:var(--moon-silver)}
+.strip-label{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;color:var(--gold);opacity:.5;text-transform:uppercase;margin-right:.5rem;flex-shrink:0}
+
+/* ── MAIN CONTENT ── */
+#calendar-container{background:var(--parchment);min-height:calc(100vh - 200px);padding:1.2rem 1.2rem 2rem}
+#loading{display:flex;align-items:center;justify-content:center;min-height:300px;flex-direction:column;gap:1rem}
+.loading-rune{font-family:'Cinzel',serif;font-size:2rem;color:var(--gold);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
+.loading-text{font-family:'Crimson Pro',serif;font-style:italic;color:var(--text-muted);font-size:.9rem;letter-spacing:.1em}
+
+/* ── MONTH VIEW ── */
+.month-section{border:1px solid var(--border);background:var(--parchment);box-shadow:2px 3px 12px rgba(26,18,8,.12);position:relative;overflow:hidden}
+.month-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.month-section.winter-month::before{background:var(--winter)}
+.month-section.summer-month::before{background:var(--summer)}
+.month-section.intercalary-month::before{background:linear-gradient(90deg,var(--summer),var(--gold-bright))}
+.month-header{background:linear-gradient(135deg,var(--ink) 0%,#2a1f0e 100%);padding:.85rem 1.2rem .65rem;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.3rem}
+.month-name{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(1.3rem,3vw,2rem);color:var(--gold-bright);letter-spacing:.05em;text-shadow:0 0 20px rgba(212,160,23,.3);line-height:1}
+.month-name sup{font-size:.42em;letter-spacing:.2em;color:var(--gold);font-weight:400;vertical-align:super;margin-left:.3em}
+.month-meta{text-align:right}
+.month-greg-range{font-family:'Crimson Pro',serif;font-size:.78rem;color:var(--moon-silver);font-style:italic}
+.month-season-tag{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;padding:.1rem .45rem;border-radius:2px;display:inline-block;margin-top:.15rem}
+.month-season-tag.winter{background:rgba(42,74,107,.4);color:#8ab4d4;border:1px solid rgba(42,74,107,.6)}
+.month-season-tag.summer{background:rgba(90,122,43,.4);color:#a8c878;border:1px solid rgba(90,122,43,.6)}
+.month-season-tag.intercalary{background:rgba(184,134,11,.3);color:var(--gold-pale);border:1px solid rgba(184,134,11,.5)}
+.dow-row{display:grid;grid-template-columns:repeat(7,1fr);background:var(--parchment-dark);border-bottom:1px solid var(--border)}
+.dow-cell{text-align:center;padding:.32rem 0;font-family:'Cinzel',serif;font-size:.58rem;font-weight:600;letter-spacing:.12em;color:var(--text-muted);text-transform:uppercase;border-right:1px solid var(--border-light)}
+.dow-cell:last-child{border-right:none}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-cell{min-height:130px;border-right:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:.4rem .5rem;position:relative;transition:background .15s;background:var(--parchment)}
+.cal-cell:nth-child(7n){border-right:none}
+.cal-cell.empty{background:var(--parchment-mid);opacity:.45}
+.cal-cell:hover:not(.empty){background:#f8f0de;cursor:pointer}
+.cal-cell.today{background:#fdf5e2;box-shadow:inset 0 0 0 2px var(--gold)}
+.cal-cell.blot-day{background:linear-gradient(135deg,#fdf0e8 0%,#f8e4d4 100%)}
+.cal-cell.blot-day.blot-main{background:linear-gradient(135deg,#fce8dc 0%,#f0d0bc 100%);box-shadow:inset 0 0 0 1px rgba(139,26,26,.3)}
+.day-heathen{font-family:'Cinzel',serif;font-weight:700;font-size:1.05rem;color:var(--ink);line-height:1;display:inline-block}
+.cal-cell.winter-day .day-heathen{color:var(--rune-blue)}
+.cal-cell.summer-day .day-heathen{color:#3a5a1a}
+.cal-cell.blot-day .day-heathen{color:var(--blot-red)}
+.day-greg{font-family:'Crimson Pro',serif;font-size:.62rem;color:var(--text-muted);display:block;line-height:1;margin-top:.04rem}
+.cell-events{margin-top:.22rem;display:flex;flex-direction:column;gap:.12rem}
+.event-tag{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.07em;padding:.08rem .28rem;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
+.event-tag.blot{background:rgba(139,26,26,.12);color:var(--blot-red);border:1px solid rgba(139,26,26,.25);font-weight:600}
+.event-tag.full-moon{background:rgba(200,192,176,.25);color:#5a5040;border:1px solid rgba(200,192,176,.5)}
+.event-tag.solstice{background:rgba(180,100,20,.12);color:#804010;border:1px solid rgba(180,100,20,.3)}
+.event-tag.equinox{background:rgba(80,140,60,.12);color:#3a6020;border:1px solid rgba(80,140,60,.3)}
+.moon-symbol{position:absolute;top:.22rem;right:.32rem;font-size:.85rem;line-height:1;color:var(--moon-silver);filter:drop-shadow(0 0 3px rgba(200,192,176,.6))}
+
+/* ── DAY VIEW ── */
+.day-view{max-width:640px;margin:0 auto}
+.day-view-header{background:linear-gradient(135deg,var(--ink) 0%,#2a1f0e 100%);border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;position:relative}
+.day-view-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.day-view-header.winter-month::before{background:var(--winter)}
+.day-view-header.summer-month::before{background:var(--summer)}
+.day-view-date-num{font-family:'Cinzel',serif;font-weight:900;font-size:5rem;color:var(--gold-bright);line-height:1;text-shadow:0 0 40px rgba(212,160,23,.3)}
+.day-view-month{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);letter-spacing:.08em;margin-top:.2rem}
+.day-view-greg{font-family:'Crimson Pro',serif;font-style:italic;font-size:1rem;color:var(--moon-silver);margin-top:.3rem}
+.day-view-season{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;margin-top:.5rem;display:inline-block;padding:.15rem .5rem;border-radius:2px}
+.day-view-season.winter{background:rgba(42,74,107,.4);color:#8ab4d4;border:1px solid rgba(42,74,107,.6)}
+.day-view-season.summer{background:rgba(90,122,43,.4);color:#a8c878;border:1px solid rgba(90,122,43,.6)}
+.day-events-panel{border:1px solid var(--border);background:var(--parchment)}
+.day-events-header{background:var(--parchment-dark);border-bottom:1px solid var(--border);padding:.5rem 1rem;font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;color:var(--text-muted);text-transform:uppercase}
+.day-event-item{padding:.7rem 1rem;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:.75rem}
+.day-event-item:last-child{border-bottom:none}
+.day-event-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-blot{background:var(--blot-red)}.dot-moon{background:var(--moon-silver);border:1px solid var(--text-muted)}.dot-solar{background:var(--gold)}
+.day-event-name{font-family:'Cinzel',serif;font-size:.75rem;color:var(--ink);letter-spacing:.06em}
+.day-event-sub{font-family:'Crimson Pro',serif;font-size:.8rem;color:var(--text-muted);font-style:italic;margin-top:.1rem}
+.day-no-events{padding:1.2rem 1rem;font-family:'Crimson Pro',serif;font-style:italic;color:var(--text-muted);font-size:.95rem}
+.day-nav{display:flex;justify-content:space-between;margin-top:1rem}
+.day-nav button{background:transparent;border:1px solid var(--border);color:var(--text-muted);font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.12em;padding:.4rem .9rem;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.day-nav button:hover{border-color:var(--gold);color:var(--gold-bright);background:#fdf5e2}
+
+/* ── WEEK VIEW ── */
+.week-header{background:linear-gradient(135deg,var(--ink) 0%,#2a1f0e 100%);border:1px solid var(--border);padding:.7rem 1.2rem;margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:center}
+.week-title{font-family:'Cinzel',serif;font-size:1rem;color:var(--gold-bright);letter-spacing:.06em}
+.week-subtitle{font-family:'Crimson Pro',serif;font-style:italic;font-size:.85rem;color:var(--moon-silver)}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--border);overflow:hidden}
+.week-dow-cell{background:var(--parchment-dark);border-bottom:1px solid var(--border);border-right:1px solid var(--border-light);padding:.3rem .4rem;text-align:center}
+.week-dow-cell:last-child{border-right:none}
+.week-dow-name{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.12em;color:var(--text-muted);text-transform:uppercase}
+.week-dow-greg{font-family:'Crimson Pro',serif;font-size:.7rem;color:var(--text-muted);margin-top:.1rem}
+.week-day-cell{min-height:140px;border-right:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:.35rem .4rem;background:var(--parchment);position:relative;transition:background .15s;cursor:pointer}
+.week-day-cell:nth-child(7n){border-right:none}
+.week-day-cell:hover{background:#f8f0de}
+.week-day-cell.today{background:#fdf5e2;box-shadow:inset 0 0 0 2px var(--gold)}
+.week-day-cell.blot-day{background:linear-gradient(135deg,#fdf0e8 0%,#f8e4d4 100%)}
+.week-day-cell.blot-main{background:linear-gradient(135deg,#fce8dc 0%,#f0d0bc 100%);box-shadow:inset 0 0 0 1px rgba(139,26,26,.3)}
+.week-day-cell.other-month{background:var(--parchment-mid);opacity:.55}
+.week-heathen{font-family:'Cinzel',serif;font-weight:700;font-size:1.5rem;line-height:1;color:var(--ink)}
+.week-heathen.winter-h{color:var(--rune-blue)}.week-heathen.summer-h{color:#3a5a1a}.week-heathen.blot-h{color:var(--blot-red)}
+.week-month-label{font-family:'Crimson Pro',serif;font-size:.68rem;color:var(--gold);margin-top:.15rem;font-style:italic}
+.week-cell-events{margin-top:.35rem;display:flex;flex-direction:column;gap:.15rem}
+.week-moon{position:absolute;top:.3rem;right:.4rem;font-size:1rem;color:var(--moon-silver);filter:drop-shadow(0 0 3px rgba(200,192,176,.6))}
+.week-nav{display:flex;justify-content:space-between;margin-top:.75rem}
+.week-nav button{background:transparent;border:1px solid var(--border);color:var(--text-muted);font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.12em;padding:.38rem .85rem;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.week-nav button:hover{border-color:var(--gold);color:var(--gold-bright);background:#fdf5e2}
+
+/* ── YEAR VIEW ── */
+.year-view-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.year-view-title{font-family:'Cinzel',serif;font-weight:700;font-size:1.3rem;color:var(--ink);letter-spacing:.06em}
+.year-view-actions{display:flex;gap:.5rem;align-items:center}
+.year-months-grid{display:flex;flex-direction:column;gap:2rem}
+.year-month-card{width:100%;border:1px solid var(--border);background:var(--parchment);box-shadow:2px 3px 12px rgba(26,18,8,.12);position:relative;overflow:hidden}
+.year-month-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.year-month-card.winter-month::before{background:var(--winter)}
+.year-month-card.summer-month::before{background:var(--summer)}
+.year-month-card.intercalary-month::before{background:linear-gradient(90deg,var(--summer),var(--gold-bright))}
+.print-btn{background:var(--gold);border:none;color:var(--ink);font-family:'Cinzel',serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;padding:.38rem 1rem;cursor:pointer;text-transform:uppercase;transition:all .2s;display:flex;align-items:center;gap:.4rem}
+.print-btn:hover{background:var(--gold-bright)}
+.print-btn svg{width:13px;height:13px}
+
+/* ── FOOTER ── */
+#app-footer{background:var(--ink);border-top:1px solid var(--gold);padding:1rem 1.5rem;text-align:center}
+.footer-quote{font-family:'Crimson Pro',serif;font-style:italic;font-size:.82rem;color:var(--moon-silver);opacity:.55;max-width:600px;margin:0 auto .35rem;line-height:1.5}
+.footer-credit{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;color:var(--gold);opacity:.45;text-transform:uppercase}
+
+/* tier/export CSS removed for v1 */
+
+/* toast removed for v1 */
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  #toolbar{padding:.45rem .75rem;gap:.4rem}
+  #calendar-container{padding:.6rem .6rem 1.5rem}
+  .cal-cell{min-height:80px;padding:.22rem}
+  .day-heathen{font-size:.9rem}
+  .week-day-cell{min-height:100px}
+  .year-months-grid{gap:1.2rem}
+  .tier-cards{grid-template-columns:1fr}
+  .header-inner{flex-direction:column;align-items:center;text-align:center}
+  .header-tier-badge{order:-1}
+}
+
+/* ── PRINT ── */
+@media print {
+  @page{size:A4 landscape;margin:10mm 12mm}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{background:white!important;color:#000!important}
+  body::before{display:none!important}
+  #app-header,#toolbar,#blots-strip,#app-footer,.modal-overlay,#toast{display:none!important}
+  #calendar-container{padding:0!important;background:white!important;min-height:0!important}
+  /* Hide everything that isn't the year view */
+  .month-section,.day-view,.week-view,.day-nav,.week-nav{display:none!important}
+
+  /* ── Year view wrapper ── */
+  .year-view{display:block!important}
+  .year-view-header{
+    margin-bottom:5mm!important;
+    display:flex!important;
+    justify-content:space-between!important;
+    align-items:center!important;
+    border-bottom:1pt solid #888!important;
+    padding-bottom:3mm!important;
+  }
+  .year-view-title{
+    font-family:'Cinzel',serif!important;
+    font-size:13pt!important;
+    color:#1a1208!important;
+    font-weight:700!important;
+    letter-spacing:.05em!important;
+  }
+  .print-btn,.year-view-actions{display:none!important}
+
+  /* ── One card per page, full width ── */
+  .year-months-grid{display:block!important}
+  .year-month-card{
+    display:block!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    break-before:page!important;
+    page-break-before:always!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+    box-shadow:none!important;
+    border:1pt solid #bbb!important;
+    transform:none!important;
+    cursor:default!important;
+    margin:0!important;
+    overflow:visible!important;
+  }
+  .year-month-card:first-child{
+    break-before:avoid!important;
+    page-break-before:avoid!important;
+  }
+  /* Season accent bar */
+  .year-month-card::before{height:4pt!important;display:block!important}
+  .year-month-card.winter-month::before{background:#2a4a6b!important}
+  .year-month-card.summer-month::before{background:#5a7a2b!important}
+  .year-month-card.intercalary-month::before{background:#b8860b!important}
+
+  /* ── Month header ── */
+  .month-header{
+    background:#1a1208!important;
+    padding:3mm 5mm 2.5mm!important;
+    display:flex!important;
+    align-items:baseline!important;
+    justify-content:space-between!important;
+    flex-wrap:wrap!important;
+    gap:2mm!important;
+  }
+  .month-name{
+    font-family:'Cinzel',serif!important;
+    font-size:16pt!important;
+    color:#d4a017!important;
+    letter-spacing:.05em!important;
+    line-height:1!important;
+    text-shadow:none!important;
+  }
+  .month-name sup{
+    font-size:7pt!important;
+    color:#b8860b!important;
+    letter-spacing:.15em!important;
+  }
+  .month-meta{text-align:right!important}
+  .month-greg-range{
+    font-family:'Crimson Pro',serif!important;
+    font-size:9pt!important;
+    color:#c8c0b0!important;
+    font-style:italic!important;
+  }
+  .month-season-tag{
+    font-family:'Cinzel',serif!important;
+    font-size:6pt!important;
+    letter-spacing:.15em!important;
+    padding:.5mm 2mm!important;
+    border-radius:1pt!important;
+    display:inline-block!important;
+    margin-top:1mm!important;
+  }
+  .month-season-tag.winter{background:rgba(42,74,107,.35)!important;color:#8ab4d4!important;border:0.5pt solid rgba(42,74,107,.5)!important}
+  .month-season-tag.summer{background:rgba(90,122,43,.35)!important;color:#7aaa48!important;border:0.5pt solid rgba(90,122,43,.5)!important}
+  .month-season-tag.intercalary{background:rgba(184,134,11,.25)!important;color:#b8860b!important;border:0.5pt solid rgba(184,134,11,.4)!important}
+
+  /* ── Day-of-week header row ── */
+  .dow-row{
+    display:grid!important;
+    grid-template-columns:repeat(7,1fr)!important;
+    background:#e8d9b8!important;
+    border-bottom:0.5pt solid #bbb!important;
+  }
+  .dow-cell{
+    text-align:center!important;
+    padding:1.5mm 0!important;
+    font-family:'Cinzel',serif!important;
+    font-size:7.5pt!important;
+    font-weight:600!important;
+    letter-spacing:.1em!important;
+    color:#6b5a3e!important;
+    text-transform:uppercase!important;
+    border-right:0.5pt solid #ccc!important;
+  }
+  .dow-cell:last-child{border-right:none!important}
+
+  /* ── Calendar cell grid ── */
+  .cal-grid{
+    display:grid!important;
+    grid-template-columns:repeat(7,1fr)!important;
+    border-left:0.5pt solid #ccc!important;
+    border-top:0.5pt solid #ccc!important;
+  }
+  .cal-cell{
+    min-height:22mm!important;
+    border-right:0.5pt solid #ccc!important;
+    border-bottom:0.5pt solid #ccc!important;
+    padding:1.5mm 1.5mm!important;
+    position:relative!important;
+    background:#f4ead5!important;
+    box-shadow:none!important;
+    cursor:default!important;
+  }
+  .cal-cell:nth-child(7n){border-right:none!important}
+  .cal-cell.empty{background:#ede0c4!important;opacity:.5!important}
+  .cal-cell.today{background:#fdf5e2!important;box-shadow:inset 0 0 0 1.5pt #b8860b!important}
+  .cal-cell.blot-day{background:linear-gradient(135deg,#fdf0e8 0%,#f5dcc8 100%)!important}
+  .cal-cell.blot-day.blot-main{background:linear-gradient(135deg,#fce8dc 0%,#eecdb0 100%)!important;box-shadow:inset 0 0 0 1pt rgba(139,26,26,.35)!important}
+
+  /* Day number */
+  .day-heathen{
+    font-family:'Cinzel',serif!important;
+    font-weight:700!important;
+    font-size:11pt!important;
+    color:#1a1208!important;
+    line-height:1!important;
+    display:inline-block!important;
+  }
+  .cal-cell.winter-day .day-heathen{color:#2a4a6b!important}
+  .cal-cell.summer-day .day-heathen{color:#3a5a1a!important}
+  .cal-cell.blot-day .day-heathen{color:#8b1a1a!important}
+
+  /* Gregorian date below heathen number */
+  .day-greg{
+    font-family:'Crimson Pro',serif!important;
+    font-size:6.5pt!important;
+    color:#6b5a3e!important;
+    display:block!important;
+    line-height:1.2!important;
+    margin-top:.5mm!important;
+  }
+
+  /* Full moon symbol */
+  .moon-symbol{
+    position:absolute!important;
+    top:1.5mm!important;
+    right:1.5mm!important;
+    font-size:8pt!important;
+    color:#a0987a!important;
+    filter:none!important;
+  }
+
+  /* Event tags inside cells */
+  .cell-events{
+    margin-top:1mm!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:.5mm!important;
+  }
+  .event-tag{
+    font-family:'Cinzel',serif!important;
+    font-size:5pt!important;
+    letter-spacing:.04em!important;
+    padding:.4mm 1mm!important;
+    border-radius:1pt!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    text-transform:uppercase!important;
+    display:block!important;
+  }
+  .event-tag.blot{
+    background:rgba(139,26,26,.1)!important;
+    color:#8b1a1a!important;
+    border:0.5pt solid rgba(139,26,26,.3)!important;
+    font-weight:700!important;
+  }
+  .event-tag.full-moon{
+    background:rgba(200,192,176,.2)!important;
+    color:#5a5040!important;
+    border:0.5pt solid rgba(200,192,176,.5)!important;
+  }
+  .event-tag.solstice{
+    background:rgba(180,100,20,.1)!important;
+    color:#804010!important;
+    border:0.5pt solid rgba(180,100,20,.3)!important;
+  }
+  .event-tag.equinox{
+    background:rgba(80,140,60,.1)!important;
+    color:#3a6020!important;
+    border:0.5pt solid rgba(80,140,60,.3)!important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div id="app-header">
+  <div class="header-runes">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛊ ᛏ ᛒ ᛖ ᛗ ᛚ ᛜ ᛞ ᛟ</div>
+  <div class="header-inner">
+    <div style="width:140px"></div>
+    <div class="header-center">
+      <div class="header-title">Heathen Lunisolar Calendar</div>
+      <div class="header-subtitle">The Old Ways, Reckoned by Sun and Moon</div>
+    </div>
+    <div style="width:140px;display:flex;justify-content:flex-end;align-items:center">
+      <a href="heathen-calendar-about.html" style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.15em;color:var(--gold);text-decoration:none;text-transform:uppercase;border:1px solid var(--gold);padding:.28rem .7rem;transition:all .2s;white-space:nowrap" onmouseover="this.style.background='rgba(184,134,11,.15)'" onmouseout="this.style.background='transparent'">About & FAQ</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ TOOLBAR ═══════════ -->
+<div id="toolbar">
+  <div class="toolbar-left">
+    <button class="tbtn" id="prev-btn">◂</button>
+    <button class="tbtn accent" id="today-btn">Today</button>
+    <button class="tbtn" id="next-btn">▸</button>
+    <div id="year-ctrl" style="display:flex;align-items:center;gap:.4rem">
+      <span class="ctrl-label">Year</span>
+      <select id="year-select"></select>
+    </div>
+  </div>
+  <div class="toolbar-right">
+    <div class="view-tabs">
+      <button id="tab-day">Day</button>
+      <button id="tab-week">Week</button>
+      <button id="tab-month" class="active">Month</button>
+      <button id="tab-year">Year</button>
+    </div>
+    <div class="hem-toggle">
+      <button id="hem-north" class="active">North</button>
+      <button id="hem-south">South</button>
+    </div>
+    <button class="tbtn" id="export-btn" style="display:none"></button>
+  </div>
+</div>
+
+<!-- ═══════════ BLOTS STRIP ═══════════ -->
+<div id="blots-strip"><span class="strip-label">Blots</span></div>
+
+<!-- ═══════════ CALENDAR ═══════════ -->
+<div id="calendar-container">
+  <div id="loading">
+    <div class="loading-rune">ᛟ</div>
+    <div class="loading-text">Reckoning the moons...</div>
+  </div>
+  <div id="view-root" style="display:none"></div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div id="app-footer">
+  <div class="footer-quote">"The sun, the sister of the moon, from the south her right hand cast over heaven's rim; no knowledge she had where her home should be, the moon knew not what might was his, the stars knew not where their stations were."</div>
+  <div class="footer-credit">— Völuspá, Stanza 5 · Calendar system by S. Holt</div>
+  <div style="margin-top:.75rem;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;color:var(--gold);opacity:.5;text-transform:uppercase">
+    More features coming soon — <a href="heathen-calendar-about.html" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">learn what's planned</a>
+  </div>
+  <div style="margin-top:.5rem;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.12em;color:var(--moon-silver);opacity:.35;text-transform:uppercase">
+    &copy; <span id="copy-year"></span> Drengskapr Viking Spirit, LLC · All Rights Reserved
+  </div>
+</div>
+
+<!-- v1: tier and export modals removed -->
+<div id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════
+   v1 — tier and export functionality removed
+   ════════════════════════════════════════════ */
+function showToast(){}
+function openModal(){}
+function closeModal(){}
+function openExportModal(){}
+function openTierModal(){}
+function canAccess(){ return false; }
+function updateTierUI(){}
+function updateExportLockUI(){}
+function populateExportWhat(){}
+
+function showToast(msg, duration=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+/* ════════════════════════════════════════════
+   ASTRONOMICAL ENGINE  (Jean Meeus)
+   ════════════════════════════════════════════ */
+function julianDay(year,month,day){if(month<=2){year-=1;month+=12}const A=Math.floor(year/100);const B=2-A+Math.floor(A/4);return Math.floor(365.25*(year+4716))+Math.floor(30.6001*(month+1))+day+B-1524.5}
+function jdToDate(jd){const jd1=jd+0.5;const Z=Math.floor(jd1);const F=jd1-Z;let A;if(Z<2299161){A=Z}else{const alpha=Math.floor((Z-1867216.25)/36524.25);A=Z+1+alpha-Math.floor(alpha/4)}const B=A+1524;const C=Math.floor((B-122.1)/365.25);const D=Math.floor(365.25*C);const E=Math.floor((B-D)/30.6001);const day=B-D-Math.floor(30.6001*E);const month=E<14?E-1:E-13;const year=month>2?C-4716:C-4715;return{year,month,day,hours:(F*24)}}
+function deg2rad(d){return d*Math.PI/180}
+function newMoonJD(k){const T=k/1236.85;const T2=T*T;const T3=T2*T;const T4=T3*T;let JDE=2451550.09766+29.530588861*k+0.00015437*T2-0.000000150*T3+0.00000000073*T4;const M=deg2rad(2.5534+29.10535670*k-0.0000014*T2-0.00000011*T3);const Mp=deg2rad(201.5643+385.81693528*k+0.0107582*T2+0.00001238*T3-0.000000058*T4);const F=deg2rad(160.7108+390.67050284*k-0.0016118*T2-0.00000227*T3+0.000000011*T4);const Om=deg2rad(124.7746-1.56375588*k+0.0020672*T2+0.00000215*T3);JDE+=-0.40720*Math.sin(Mp)+0.17241*Math.sin(M)+0.01608*Math.sin(2*Mp)+0.01039*Math.sin(2*F)+0.00739*Math.sin(Mp-M)-0.00514*Math.sin(Mp+M)+0.00208*Math.sin(2*M)-0.00111*Math.sin(Mp-2*F)-0.00057*Math.sin(Mp+2*F)+0.00056*Math.sin(2*Mp+M)-0.00042*Math.sin(3*Mp)+0.00042*Math.sin(M+2*F)+0.00038*Math.sin(M-2*F)-0.00024*Math.sin(2*Mp-M)-0.00017*Math.sin(Om)-0.00007*Math.sin(Mp+2*M)+0.00004*Math.sin(2*Mp-2*F)+0.00004*Math.sin(3*M)+0.00003*Math.sin(Mp+M-2*F)+0.00003*Math.sin(2*Mp+2*F)-0.00003*Math.sin(Mp+M+2*F)+0.00003*Math.sin(Mp-M+2*F)-0.00002*Math.sin(Mp-M-2*F)-0.00002*Math.sin(3*Mp+M)+0.00002*Math.sin(4*Mp);return JDE}
+function fullMoonJD(k){const kf=k+0.5;const T=kf/1236.85;const T2=T*T;let JDE=2451550.09766+29.530588861*kf+0.00015437*T2;const M=deg2rad(2.5534+29.10535670*kf-0.0000014*T2);const Mp=deg2rad(201.5643+385.81693528*kf+0.0107582*T2);const F=deg2rad(160.7108+390.67050284*kf-0.0016118*T2);const Om=deg2rad(124.7746-1.56375588*kf+0.0020672*T2);JDE+=-0.40614*Math.sin(Mp)+0.17302*Math.sin(M)+0.01614*Math.sin(2*Mp)+0.01043*Math.sin(2*F)+0.00734*Math.sin(Mp-M)-0.00515*Math.sin(Mp+M)+0.00209*Math.sin(2*M)-0.00111*Math.sin(Mp-2*F)-0.00057*Math.sin(Mp+2*F)+0.00056*Math.sin(2*Mp+M)-0.00042*Math.sin(3*Mp)+0.00042*Math.sin(M+2*F)+0.00038*Math.sin(M-2*F)-0.00024*Math.sin(2*Mp-M)-0.00017*Math.sin(Om)-0.00007*Math.sin(Mp+2*M);return JDE}
+function getSolarEvent(year,eventType){const Y=(year-2000)/1000;const Y2=Y*Y;const Y3=Y2*Y;const Y4=Y3*Y;const bases=[2451623.80984+365242.37404*Y+0.05169*Y2-0.00411*Y3-0.00057*Y4,2451716.56767+365241.62603*Y+0.00325*Y2+0.00888*Y3-0.00030*Y4,2451810.21715+365242.01767*Y-0.11575*Y2+0.00337*Y3+0.00078*Y4,2451900.05952+365242.74049*Y-0.06223*Y2-0.00823*Y3+0.00032*Y4];let JDE0=bases[eventType];const T=(JDE0-2451545.0)/36525;const W=deg2rad(35999.373*T-2.47);const delta=1+0.0334*Math.cos(W)+0.0007*Math.cos(2*W);const S=485*Math.cos(deg2rad(324.96+1934.136*T))+203*Math.cos(deg2rad(337.23+32964.467*T))+199*Math.cos(deg2rad(342.08+20.186*T))+182*Math.cos(deg2rad(27.85+445267.112*T))+156*Math.cos(deg2rad(73.14+45036.886*T))+136*Math.cos(deg2rad(171.52+22518.443*T))+77*Math.cos(deg2rad(222.54+65928.934*T))+74*Math.cos(deg2rad(296.72+3034.906*T))+70*Math.cos(deg2rad(243.58+9037.513*T))+58*Math.cos(deg2rad(119.81+33718.147*T))+52*Math.cos(deg2rad(297.17+150.678*T))+50*Math.cos(deg2rad(21.02+2281.226*T));return JDE0+(0.00001*S)/delta}
+function getNextNewMoonAfter(afterJD){const refJD=2451550.09766;let k=Math.floor((afterJD-refJD)/29.530588861);for(let i=0;i<5;i++){const jd=newMoonJD(k+i);if(jd>afterJD)return jd}return afterJD+29.5}
+function getFullMoonAfter(afterJD){const refJD=2451550.09766;let k=Math.floor((afterJD-refJD)/29.530588861);for(let i=0;i<5;i++){const jd=fullMoonJD(k+i);if(jd>afterJD)return jd}return afterJD+14.75}
+function todayJD(){const n=new Date();return julianDay(n.getFullYear(),n.getMonth()+1,n.getDate())}
+
+/* ════════════════════════════════════════════
+   MONTH NAME DATA
+   ════════════════════════════════════════════ */
+const MONTH_NAMES=[
+  {name:"HaustManuðr",season:"winter",meaning:"Harvest Month"},
+  {name:"GorManuðr",season:"winter",meaning:"Slaughter Month"},
+  {name:"Yulir Tungl",season:"winter",meaning:"Yule Moon"},
+  {name:"JolManuðr",season:"winter",meaning:"Yule Month"},
+  {name:"Mörsugur",season:"winter",meaning:"Fat-Sucking Month"},
+  {name:"GoaManuðr",season:"winter",meaning:"Gói's Month"},
+  {name:"EinMánuður",season:"summer",meaning:"First Month"},
+  {name:"HarpaMánuður",season:"summer",meaning:"Harpa's Month"},
+  {name:"SkerplaMánuður",season:"summer",meaning:"Skerpla's Month"},
+  {name:"SolMánuður",season:"summer",meaning:"Sun Month"},
+  {name:"Heyannir",season:"summer",meaning:"Hay Month"},
+  {name:"Tvímánuður",season:"summer",meaning:"Second Month"},
+];
+const SUMARAUKI={name:"Sumarauki",season:"summer",meaning:"Summer's Extension",intercalary:true};
+const VETRAUKI={name:"Vetrauki",season:"winter",meaning:"Winter's Extension",intercalary:true};
+const BLOT_NAMES_NH={autumnal:"Winter Nights",winter:"Yule / Midwinter",spring:"Sigurblót",summer:"Midsummer"};
+const BLOT_NAMES_SH={autumnal:"Midsummer",winter:"Sigurblót",spring:"Winter Nights",summer:"Yule / Midwinter"};
+
+/* ════════════════════════════════════════════
+   CALENDAR ENGINE
+   ════════════════════════════════════════════ */
+const _cache={};
+function computeHeathenYear(gregYear,hemisphere){
+  const key=`${gregYear}-${hemisphere}`;
+  if(_cache[key])return _cache[key];
+  const isNH=hemisphere==='north';
+  const triggerType=isNH?2:0;
+  const equinoxJD=getSolarEvent(gregYear,triggerType);
+  const firstNewMoon=getNextNewMoonAfter(equinoxJD);
+  const yearStartJD=firstNewMoon+2;
+  const months=[];
+  let curNM=firstNewMoon;
+  for(let i=0;i<14;i++){
+    const startJD=curNM+2;
+    const nextNM=getNextNewMoonAfter(curNM+20);
+    const fm=getFullMoonAfter(curNM);
+    months.push({newMoonJD:curNM,startJD,endJD:nextNM+1,fullMoonJD:fm,length:Math.round(nextNM-curNM)});
+    curNM=nextNM;
+    if(startJD>yearStartJD+400)break;
+  }
+  const nextEqJD=getSolarEvent(gregYear+1,triggerType);
+  const nextFirstNM=getNextNewMoonAfter(nextEqJD);
+  const nextYearStartJD=nextFirstNM+2;
+  const yearMonths=months.filter(m=>m.startJD<nextYearStartJD);
+  const is13Month=yearMonths.length>=13;
+  const SE={};
+  if(isNH){
+    SE.autumnal=getSolarEvent(gregYear,2);SE.winter=getSolarEvent(gregYear,3);
+    SE.spring=getSolarEvent(gregYear+1,0);SE.summer=getSolarEvent(gregYear+1,1);
+  }else{
+    SE.autumnal=getSolarEvent(gregYear,0);SE.winter=getSolarEvent(gregYear,1);
+    SE.spring=getSolarEvent(gregYear,2);SE.summer=getSolarEvent(gregYear,3);
+    if(SE.spring<yearStartJD)SE.spring=getSolarEvent(gregYear+1,2);
+    if(SE.summer<yearStartJD)SE.summer=getSolarEvent(gregYear+1,3);
+  }
+  function getBlotFM(solarEventJD){
+    // Find the lunar month that CONTAINS the solar event (startJD <= event < endJD)
+    // The blot falls on the full moon of the FOLLOWING month.
+    let idx=-1;
+    for(let i=0;i<yearMonths.length;i++){
+      if(solarEventJD>=yearMonths[i].startJD&&solarEventJD<yearMonths[i].endJD){idx=i;break}
+    }
+    if(idx>=0&&idx+1<yearMonths.length)return yearMonths[idx+1].fullMoonJD;
+    // Edge case: solar event near year boundary — skip to next new moon then get its full moon
+    const nextNM=getNextNewMoonAfter(solarEventJD);
+    return getFullMoonAfter(nextNM);
+  }  const BN=isNH?BLOT_NAMES_NH:BLOT_NAMES_SH;
+  const blots=[
+    {jd:getBlotFM(SE.autumnal),name:BN.autumnal},
+    {jd:getBlotFM(SE.winter),name:BN.winter},
+    {jd:getBlotFM(SE.spring),name:BN.spring},
+    {jd:getBlotFM(SE.summer),name:BN.summer},
+  ];
+  const solarEvents=[
+    {jd:SE.autumnal,name:isNH?"Autumnal Equinox":"Spring Equinox"},
+    {jd:SE.winter,name:isNH?"Winter Solstice":"Summer Solstice"},
+    {jd:SE.spring,name:isNH?"Spring Equinox":"Autumnal Equinox"},
+    {jd:SE.summer,name:isNH?"Summer Solstice":"Winter Solstice"},
+  ];
+  const baseNames=[...MONTH_NAMES];
+  let namedMonths;
+  if(is13Month){
+    const ic=isNH?SUMARAUKI:VETRAUKI;
+    namedMonths=[...baseNames.slice(0,10),ic,...baseNames.slice(10)];
+  }else{
+    namedMonths=baseNames;
+  }
+  const result=yearMonths.slice(0,namedMonths.length).map((m,i)=>({...m,...namedMonths[i],index:i}));
+  const allDays={};
+  function addEvent(jd,evt){
+    const key2=Math.floor(jd+0.5);
+    if(!allDays[key2])allDays[key2]=[];
+    allDays[key2].push(evt);
+  }
+  for(const b of blots){
+    addEvent(b.jd-1,{type:'blot',name:b.name,isMain:false});
+    addEvent(b.jd,{type:'blot',name:b.name,isMain:true});
+    addEvent(b.jd+1,{type:'blot',name:b.name,isMain:false});
+  }
+  for(const m of result){
+    if(m.fullMoonJD)addEvent(m.fullMoonJD,{type:'full-moon',name:'Full Moon'});
+  }
+  for(const se of solarEvents){
+    addEvent(se.jd,{type:se.name.includes('Equinox')?'equinox':'solstice',name:se.name});
+  }
+  const data={yearMonths:result,blots,solarEvents,is13Month,yearStartJD,nextYearStartJD,equinoxJD,hemisphere,gregorianYear:gregYear,allDays};
+  _cache[key]=data;
+  return data;
+}
+
+function findMonthForJD(jd,data){
+  return data.yearMonths.find(m=>jd>=m.startJD&&jd<m.endJD)||null;
+}
+function getEventsForJD(jd,data){
+  return data.allDays[Math.floor(jd+0.5)]||[];
+}
+
+/* ════════════════════════════════════════════
+   FORMATTING
+   ════════════════════════════════════════════ */
+const GREG_MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DOW_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const DOW_SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function fmtGreg(jd){const d=jdToDate(jd);return`${GREG_MONTHS[d.month-1]} ${d.day}, ${d.year}`}
+function fmtShort(jd){const d=jdToDate(jd);return`${d.month}/${d.day}/${d.year}`}
+function jdDow(jd){return Math.round(jd+1.5)%7}
+
+/* ════════════════════════════════════════════
+   APP STATE
+   ════════════════════════════════════════════ */
+const state={
+  view:'month',
+  hemisphere:'north',
+  heathenYear:null,
+  focusJD:null,
+  cachedData:null,
+};
+
+function getCurrentHYForDate(jd,hem){
+  const yr=jdToDate(jd).year;
+  for(const y of[yr,yr-1]){
+    const d=computeHeathenYear(y,hem);
+    if(jd>=d.yearStartJD&&jd<d.nextYearStartJD)return y;
+  }
+  return yr;
+}
+
+/* v1: ICS engine and export helpers removed */
+
+/* ════════════════════════════════════════════
+   VIEW: MONTH
+   ════════════════════════════════════════════ */
+function renderMonthView(data,focusJD){
+  const todayJDV=todayJD();
+  let month=findMonthForJD(focusJD,data);
+  if(!month)month=data.yearMonths[0];
+  const monthLength=Math.round(month.endJD-month.startJD);
+  const startDOW=jdDow(month.startJD);
+  const seasonTag=month.intercalary?'intercalary':month.season;
+  const seasonLabel=month.intercalary?'Intercalary':(month.season==='winter'?'Winter Half':'Summer Half');
+  const cls=month.intercalary?'intercalary-month':(month.season==='winter'?'winter-month':'summer-month');
+  const monthPos=data.yearMonths.indexOf(month)+1;
+  const totalMonths=data.yearMonths.length;
+  const prevMonth=data.yearMonths[monthPos-2]||null;
+  const nextMonth=data.yearMonths[monthPos]||null;
+  const prevLabel=prevMonth?`◂ ${prevMonth.name}`:'◂ Prev';
+  const nextLabel=nextMonth?`${nextMonth.name} ▸`:'Next ▸';
+  const endYear=jdToDate(data.yearMonths[totalMonths-1].endJD).year;
+  const wrap=document.createElement('div');
+  wrap.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;padding:0 .1rem">
+      <span style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase">Month ${monthPos} of ${totalMonths}</span>
+      <span style="font-family:'Crimson Pro',serif;font-style:italic;font-size:.78rem;color:var(--text-muted)">${data.gregorianYear}–${String(endYear).slice(-2)} Heathen Year${data.is13Month?' · 13-Month Year':''}</span>
+    </div>
+    <div class="month-section ${cls}">
+      <div class="month-header">
+        <div><div class="month-name">${month.name}<sup>${month.meaning}</sup></div></div>
+        <div class="month-meta">
+          <div class="month-greg-range">${fmtGreg(month.startJD)} – ${fmtGreg(month.endJD-1)}</div>
+          <div class="month-season-tag ${seasonTag}">${seasonLabel}</div>
+        </div>
+      </div>
+      <div class="dow-row">${DOW_SHORT.map(d=>`<div class="dow-cell">${d}</div>`).join('')}</div>
+      <div class="cal-grid" id="month-grid"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:.75rem;gap:.5rem">
+      <button class="tbtn" id="month-prev-btn">${prevLabel}</button>
+      <button class="tbtn accent" id="month-today-btn" style="display:${(todayJDV>=month.startJD&&todayJDV<month.endJD)?'none':'block'}">↩ Current Month</button>
+      <button class="tbtn" id="month-next-btn">${nextLabel}</button>
+    </div>
+  `;
+  const grid=wrap.querySelector('#month-grid');
+  for(let e=0;e<startDOW;e++){const el=document.createElement('div');el.className='cal-cell empty';grid.appendChild(el)}
+  for(let d=1;d<=monthLength;d++){
+    const cellJD=month.startJD+d-1;
+    const evts=getEventsForJD(cellJD,data);
+    const isToday=Math.abs(cellJD-todayJDV)<0.5;
+    const hasBlotMain=evts.some(e=>e.type==='blot'&&e.isMain);
+    const hasBlot=evts.some(e=>e.type==='blot');
+    const hasFM=evts.some(e=>e.type==='full-moon');
+    const gregD=jdToDate(cellJD);
+    let cc='cal-cell '+(month.season)+'-day';
+    if(hasBlotMain)cc+=' blot-day blot-main';
+    else if(hasBlot)cc+=' blot-day';
+    if(isToday)cc+=' today';
+    const cell=document.createElement('div');
+    cell.className=cc;
+    cell.dataset.jd=cellJD;
+    let html=`<span class="day-heathen">${d}</span><span class="day-greg">${gregD.month}/${gregD.day}/${gregD.year}</span>`;
+    if(hasFM)html+=`<span class="moon-symbol">○</span>`;
+    if(evts.length){html+=`<div class="cell-events">`;for(const ev of evts){html+=`<div class="event-tag ${ev.type==='full-moon'?'full-moon':ev.type}">${ev.name}</div>`}html+=`</div>`}
+    cell.innerHTML=html;
+    cell.addEventListener('click',()=>{state.focusJD=cellJD;setView('day')});
+    grid.appendChild(cell);
+  }
+  const used=startDOW+monthLength;const rem=7-(used%7);
+  if(rem<7)for(let e=0;e<rem;e++){const el=document.createElement('div');el.className='cal-cell empty';grid.appendChild(el)}
+  wrap.querySelector('#month-prev-btn').addEventListener('click',()=>{
+    const prevJD=prevMonth?prevMonth.startJD+5:month.startJD-1;
+    state.focusJD=prevJD;
+    const newHY=getCurrentHYForDate(prevJD,state.hemisphere);
+    if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}
+    renderView();
+  });
+  wrap.querySelector('#month-next-btn').addEventListener('click',()=>{
+    const nextJD=nextMonth?nextMonth.startJD+5:month.endJD+1;
+    state.focusJD=nextJD;
+    const newHY=getCurrentHYForDate(nextJD,state.hemisphere);
+    if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}
+    renderView();
+  });
+  const todayMthBtn=wrap.querySelector('#month-today-btn');
+  if(todayMthBtn){todayMthBtn.addEventListener('click',()=>{const jd2=todayJD();state.focusJD=jd2;state.heathenYear=getCurrentHYForDate(jd2,state.hemisphere);state.cachedData=null;populateYearSelect();renderView()})}
+  return wrap;
+}
+
+/* ════════════════════════════════════════════
+   VIEW: DAY
+   ════════════════════════════════════════════ */
+function renderDayView(data,focusJD){
+  const todayJDV=todayJD();
+  const isToday=Math.abs(focusJD-todayJDV)<0.5;
+  const month=findMonthForJD(focusJD,data);
+  const evts=getEventsForJD(focusJD,data);
+  const gregD=jdToDate(focusJD);
+  const dow=DOW_FULL[jdDow(focusJD)];
+  const hDay=month?Math.round(focusJD-month.startJD)+1:'—';
+  const season=month?month.season:'winter';
+  const cls=season==='winter'?'winter-month':'summer-month';
+  const wrap=document.createElement('div');
+  wrap.className='day-view';
+  let evtHtml='';
+  if(evts.length===0){evtHtml=`<div class="day-no-events">No special events on this day.</div>`}
+  else{
+    for(const ev of evts){
+      const dot=ev.type==='blot'?'dot-blot':ev.type==='full-moon'?'dot-moon':'dot-solar';
+      const sub=ev.type==='blot'?'Traditional Heathen blót — celebrated for 3 days around the full moon':ev.type==='full-moon'?'Full moon of the current lunar month':'Astronomical solar event';
+      evtHtml+=`<div class="day-event-item"><div class="day-event-dot ${dot}"></div><div><div class="day-event-name">${ev.name}</div><div class="day-event-sub">${sub}</div></div></div>`;
+    }
+  }
+  const todayMark=isToday?`<div style="margin-top:.5rem;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:var(--gold-bright);text-transform:uppercase">✦ Today</div>`:'';
+  wrap.innerHTML=`
+    <div class="day-view-header ${cls}">
+      <div style="display:flex;align-items:flex-end;gap:1rem;flex-wrap:wrap">
+        <div class="day-view-date-num">${hDay}</div>
+        <div>
+          <div class="day-view-month">${month?month.name:'Unknown Month'}</div>
+          <div class="day-view-greg">${dow}, ${GREG_MONTHS[gregD.month-1]} ${gregD.day}, ${gregD.year}</div>
+          <div class="day-view-season ${season}">${season==='winter'?'Winter Half':'Summer Half'}</div>
+          ${todayMark}
+        </div>
+      </div>
+    </div>
+    <div class="day-events-panel">
+      <div class="day-events-header">Events & Observations</div>
+      ${evtHtml}
+    </div>
+    <div class="day-nav">
+      <button id="day-prev-btn">◂ Previous Day</button>
+      <button id="day-goto-month-btn" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.12em;padding:.4rem .9rem;cursor:pointer;transition:all .2s;text-transform:uppercase">↩ Month View</button>
+      <button id="day-next-btn">Next Day ▸</button>
+    </div>
+  `;
+  wrap.querySelector('#day-prev-btn').addEventListener('click',()=>{state.focusJD--;const newHY=getCurrentHYForDate(state.focusJD,state.hemisphere);if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}renderView()});
+  wrap.querySelector('#day-next-btn').addEventListener('click',()=>{state.focusJD++;const newHY=getCurrentHYForDate(state.focusJD,state.hemisphere);if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}renderView()});
+  wrap.querySelector('#day-goto-month-btn').addEventListener('click',()=>setView('month'));
+  return wrap;
+}
+
+/* ════════════════════════════════════════════
+   VIEW: WEEK
+   ════════════════════════════════════════════ */
+function renderWeekView(data,focusJD){
+  const todayJDV=todayJD();
+  const dow=jdDow(focusJD);
+  const weekStartJD=focusJD-dow;
+  const wrap=document.createElement('div');
+  wrap.className='week-view';
+  const startD=jdToDate(weekStartJD);
+  const endD=jdToDate(weekStartJD+6);
+  wrap.innerHTML=`
+    <div class="week-header">
+      <div>
+        <div class="week-title">${GREG_MONTHS[startD.month-1]} ${startD.day} – ${GREG_MONTHS[endD.month-1]} ${endD.day}, ${endD.year}</div>
+        <div class="week-subtitle">Week view · ${state.hemisphere==='north'?'Northern':'Southern'} Hemisphere</div>
+      </div>
+    </div>
+    <div class="week-grid" id="week-grid"></div>
+    <div class="week-nav">
+      <button id="week-prev-btn">◂ Previous Week</button>
+      <button id="week-today-btn" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.12em;padding:.38rem .85rem;cursor:pointer;text-transform:uppercase;transition:all .2s"style="display:${(todayJDV>=weekStartJD&&todayJDV<weekStartJD+7)?'none':'block'}">This Week</button>
+      <button id="week-next-btn">Next Week ▸</button>
+    </div>
+  `;
+  const grid=wrap.querySelector('#week-grid');
+  // DOW headers
+  for(let i=0;i<7;i++){
+    const cellJD=weekStartJD+i;
+    const gd=jdToDate(cellJD);
+    const hdr=document.createElement('div');
+    hdr.className='week-dow-cell';
+    hdr.innerHTML=`<div class="week-dow-name">${DOW_SHORT[i]}</div><div class="week-dow-greg">${gd.month}/${gd.day}</div>`;
+    grid.appendChild(hdr);
+  }
+  // Day cells
+  for(let i=0;i<7;i++){
+    const cellJD=weekStartJD+i;
+    // May span across years — find the right data
+    const cellHY=getCurrentHYForDate(cellJD,state.hemisphere);
+    const cellData=computeHeathenYear(cellHY,state.hemisphere);
+    const cellMonth=findMonthForJD(cellJD,cellData);
+    const evts=getEventsForJD(cellJD,cellData);
+    const isToday=Math.abs(cellJD-todayJDV)<0.5;
+    const hasBlotMain=evts.some(e=>e.type==='blot'&&e.isMain);
+    const hasBlot=evts.some(e=>e.type==='blot');
+    const hasFM=evts.some(e=>e.type==='full-moon');
+    const hDay=cellMonth?Math.round(cellJD-cellMonth.startJD)+1:'—';
+    const season=cellMonth?cellMonth.season:'winter';
+    let cc='week-day-cell';
+    if(isToday)cc+=' today';
+    if(hasBlotMain)cc+=' blot-main';
+    else if(hasBlot)cc+=' blot-day';
+    const cell=document.createElement('div');
+    cell.className=cc;
+    let html=`<div class="week-heathen ${season}-h${hasBlot?' blot-h':''}">${hDay}</div>`;
+    if(cellMonth)html+=`<div class="week-month-label">${cellMonth.name}</div>`;
+    if(hasFM)html+=`<div class="week-moon">○</div>`;
+    html+=`<div class="week-cell-events">`;
+    for(const ev of evts){html+=`<div class="event-tag ${ev.type==='full-moon'?'full-moon':ev.type}">${ev.name}</div>`}
+    html+=`</div>`;
+    cell.innerHTML=html;
+    cell.addEventListener('click',()=>{state.focusJD=cellJD;const newHY=getCurrentHYForDate(cellJD,state.hemisphere);if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}setView('day')});
+    grid.appendChild(cell);
+  }
+  wrap.querySelector('#week-prev-btn').addEventListener('click',()=>{state.focusJD-=7;renderView()});
+  wrap.querySelector('#week-next-btn').addEventListener('click',()=>{state.focusJD+=7;renderView()});
+  wrap.querySelector('#week-today-btn').addEventListener('click',()=>{const jd2=todayJD();state.focusJD=jd2;state.heathenYear=getCurrentHYForDate(jd2,state.hemisphere);state.cachedData=null;populateYearSelect();renderView()});
+  return wrap;
+}
+
+/* ════════════════════════════════════════════
+   VIEW: YEAR
+   ════════════════════════════════════════════ */
+function renderYearView(data){
+  const todayJDV=todayJD();
+  const endYear=data.yearMonths.length?jdToDate(data.yearMonths[data.yearMonths.length-1].endJD).year:data.gregorianYear+1;
+  const titleText=`Heathen Year ${data.gregorianYear}–${String(endYear).slice(-2)} · ${data.is13Month?'13':'12'} Months`;
+  const wrap=document.createElement('div');
+  wrap.className='year-view';
+  const hdr=document.createElement('div');
+  hdr.className='year-view-header';
+  hdr.innerHTML=`
+    <div class="year-view-title">${titleText}</div>
+    <div class="year-view-actions">
+      <button class="print-btn" id="print-year-btn">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 5a2 2 0 00-2 2v4a2 2 0 002 2h1v1a2 2 0 002 2h6a2 2 0 002-2v-1h1a2 2 0 002-2V7a2 2 0 00-2-2H2zm0 1h12a1 1 0 011 1v4a1 1 0 01-1 1H2a1 1 0 01-1-1V7a1 1 0 011-1zM4 3a1 1 0 011-1h6a1 1 0 011 1v2H4V3zm1 8h6a1 1 0 011 1v1a1 1 0 01-1 1H5a1 1 0 01-1-1v-1a1 1 0 011-1z"/></svg>
+        Print / PDF
+      </button>
+    </div>
+  `;
+  hdr.querySelector('#print-year-btn').addEventListener('click',()=>window.print());
+  wrap.appendChild(hdr);
+  const grid=document.createElement('div');
+  grid.className='year-months-grid';
+  for(const month of data.yearMonths){
+    const card=document.createElement('div');
+    const cls=month.intercalary?'intercalary-month':(month.season==='winter'?'winter-month':'summer-month');
+    card.className=`year-month-card ${cls}`;
+
+    const monthLength=Math.round(month.endJD-month.startJD);
+    const startDOW=jdDow(month.startJD);
+    const seasonTag=month.intercalary?'intercalary':month.season;
+    const seasonLabel=month.intercalary?'Intercalary':(month.season==='winter'?'Winter Half':'Summer Half');
+    const gregStart=fmtGreg(month.startJD);
+    const gregEnd=fmtGreg(month.endJD-1);
+
+    // Build full-detail cells matching month view exactly
+    let cellsHTML='';
+    // Empty prefix cells
+    for(let e=0;e<startDOW;e++) cellsHTML+=`<div class="cal-cell empty"></div>`;
+    // Day cells
+    for(let d=1;d<=monthLength;d++){
+      const cellJD=month.startJD+d-1;
+      const evts=getEventsForJD(cellJD,data);
+      const isToday=Math.abs(cellJD-todayJDV)<0.5;
+      const hasBlotMain=evts.some(e=>e.type==='blot'&&e.isMain);
+      const hasBlot=evts.some(e=>e.type==='blot');
+      const hasFM=evts.some(e=>e.type==='full-moon');
+      const gregD=jdToDate(cellJD);
+      let cc='cal-cell '+(month.season)+'-day';
+      if(hasBlotMain) cc+=' blot-day blot-main';
+      else if(hasBlot) cc+=' blot-day';
+      if(isToday) cc+=' today';
+      let cellContent=`<span class="day-heathen">${d}</span><span class="day-greg">${gregD.month}/${gregD.day}/${gregD.year}</span>`;
+      if(hasFM) cellContent+=`<span class="moon-symbol">○</span>`;
+      if(evts.length){
+        cellContent+=`<div class="cell-events">`;
+        for(const ev of evts) cellContent+=`<div class="event-tag ${ev.type==='full-moon'?'full-moon':ev.type}">${ev.name}</div>`;
+        cellContent+=`</div>`;
+      }
+      cellsHTML+=`<div class="${cc}">${cellContent}</div>`;
+    }
+    // Trailing empty cells
+    const used=startDOW+monthLength;
+    const rem=7-(used%7);
+    if(rem<7) for(let e=0;e<rem;e++) cellsHTML+=`<div class="cal-cell empty"></div>`;
+
+    // Full month-view-identical structure inside each card
+    card.innerHTML=`
+      <div class="month-header">
+        <div><div class="month-name">${month.name}<sup>${month.meaning}</sup></div></div>
+        <div class="month-meta">
+          <div class="month-greg-range">${gregStart} – ${gregEnd}</div>
+          <div class="month-season-tag ${seasonTag}">${seasonLabel}</div>
+        </div>
+      </div>
+      <div class="dow-row">${DOW_SHORT.map(d=>`<div class="dow-cell">${d}</div>`).join('')}</div>
+      <div class="cal-grid">${cellsHTML}</div>
+    `;
+
+    card.addEventListener('click',(e)=>{
+      // Only navigate if they didn't click a specific cell
+      if(e.target.closest('.cal-cell')){
+        const jd=parseFloat(e.target.closest('.cal-cell').dataset?.jd);
+        if(jd){state.focusJD=jd;setView('day');return;}
+      }
+      state.focusJD=month.startJD+Math.floor(monthLength/2);
+      setView('month');
+    });
+    // Store JD on each cell for click navigation
+    // (do it after innerHTML so we can query the cells)
+    const cells=card.querySelectorAll('.cal-cell:not(.empty)');
+    cells.forEach((cell,i)=>{cell.dataset.jd=month.startJD+i;});
+
+    grid.appendChild(card);
+  }
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+/* ════════════════════════════════════════════
+   BLOTS STRIP
+   ════════════════════════════════════════════ */
+function updateBlotsStrip(data){
+  const strip=document.getElementById('blots-strip');
+  strip.innerHTML=`<span class="strip-label">Blots</span>`;
+  for(const b of data.blots){
+    const chip=document.createElement('div');
+    chip.className='blot-chip';
+    chip.innerHTML=`<span class="blot-chip-name">${b.name}</span><span class="blot-chip-date">${fmtGreg(b.jd)}</span>`;
+    chip.addEventListener('click',()=>{state.focusJD=b.jd;setView('day')});
+    strip.appendChild(chip);
+  }
+}
+
+/* ════════════════════════════════════════════
+   RENDER DISPATCHER
+   ════════════════════════════════════════════ */
+function renderView(){
+  const container=document.getElementById('view-root');
+  const loading=document.getElementById('loading');
+  container.innerHTML='';
+  container.style.display='none';
+  loading.style.display='flex';
+  setTimeout(()=>{
+    try{
+      if(!state.cachedData||state.cachedData.gregorianYear!==state.heathenYear||state.cachedData.hemisphere!==state.hemisphere){
+        state.cachedData=computeHeathenYear(state.heathenYear,state.hemisphere);
+      }
+      const data=state.cachedData;
+      updateBlotsStrip(data);
+      let el;
+      if(state.view==='day')       el=renderDayView(data,state.focusJD);
+      else if(state.view==='week') el=renderWeekView(data,state.focusJD);
+      else if(state.view==='year') el=renderYearView(data);
+      else                         el=renderMonthView(data,state.focusJD);
+      container.appendChild(el);
+      loading.style.display='none';
+      container.style.display='block';
+      document.getElementById('year-ctrl').style.display=(state.view==='month'||state.view==='year')?'flex':'none';
+    }catch(e){
+      console.error(e);
+      loading.innerHTML=`<div class="loading-text">Error: ${e.message}</div>`;
+    }
+  },40);
+}
+
+/* ════════════════════════════════════════════
+   TOOLBAR NAV
+   ════════════════════════════════════════════ */
+function handlePrev(){
+  if(state.view==='day'){state.focusJD--;const newHY=getCurrentHYForDate(state.focusJD,state.hemisphere);if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}renderView();}
+  else if(state.view==='week'){state.focusJD-=7;renderView();}
+  else if(state.view==='month'){
+    const data=state.cachedData||computeHeathenYear(state.heathenYear,state.hemisphere);
+    const m=findMonthForJD(state.focusJD,data);
+    const prevJD=m?m.startJD-1:state.focusJD-30;
+    state.focusJD=prevJD;
+    const newHY=getCurrentHYForDate(prevJD,state.hemisphere);
+    if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}
+    renderView();
+  }else if(state.view==='year'){state.heathenYear--;populateYearSelect();renderView();}
+}
+function handleNext(){
+  if(state.view==='day'){state.focusJD++;const newHY=getCurrentHYForDate(state.focusJD,state.hemisphere);if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}renderView();}
+  else if(state.view==='week'){state.focusJD+=7;renderView();}
+  else if(state.view==='month'){
+    const data=state.cachedData||computeHeathenYear(state.heathenYear,state.hemisphere);
+    const m=findMonthForJD(state.focusJD,data);
+    const nextJD=m?m.endJD+1:state.focusJD+30;
+    state.focusJD=nextJD;
+    const newHY=getCurrentHYForDate(nextJD,state.hemisphere);
+    if(newHY!==state.heathenYear){state.heathenYear=newHY;state.cachedData=null;populateYearSelect()}
+    renderView();
+  }else if(state.view==='year'){state.heathenYear++;populateYearSelect();renderView();}
+}
+
+function setView(v){
+  state.view=v;
+  document.querySelectorAll('.view-tabs button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+v).classList.add('active');
+  renderView();
+}
+
+function populateYearSelect(){
+  const sel=document.getElementById('year-select');
+  sel.innerHTML='';
+  const cy=new Date().getFullYear();
+  for(let y=cy-5;y<=cy+10;y++){
+    const o=document.createElement('option');
+    o.value=y;o.textContent=`${y}–${String(y+1).slice(-2)}`;
+    if(y===state.heathenYear)o.selected=true;
+    sel.appendChild(o);
+  }
+}
+
+/* ════════════════════════════════════════════
+   MODAL SYSTEM
+   ════════════════════════════════════════════ */
+/* v1: modal system and all tier/export handlers removed */
+
+/* ════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════ */
+function init(){
+  const jd=todayJD();
+  state.focusJD=jd;
+  state.heathenYear=getCurrentHYForDate(jd,'north');
+  state.view='month';
+  populateYearSelect();
+
+  document.getElementById('prev-btn').addEventListener('click',handlePrev);
+  document.getElementById('next-btn').addEventListener('click',handleNext);
+  document.getElementById('today-btn').addEventListener('click',()=>{
+    const jd2=todayJD();
+    state.focusJD=jd2;
+    state.heathenYear=getCurrentHYForDate(jd2,state.hemisphere);
+    state.cachedData=null;
+    populateYearSelect();
+    renderView();
+  });
+  document.getElementById('year-select').addEventListener('change',e=>{
+    state.heathenYear=parseInt(e.target.value);
+    state.cachedData=null;
+    renderView();
+  });
+  document.getElementById('tab-day').addEventListener('click',()=>setView('day'));
+  document.getElementById('tab-week').addEventListener('click',()=>setView('week'));
+  document.getElementById('tab-month').addEventListener('click',()=>setView('month'));
+  document.getElementById('tab-year').addEventListener('click',()=>setView('year'));
+  document.getElementById('hem-north').addEventListener('click',()=>{
+    if(state.hemisphere!=='north'){state.hemisphere='north';state.cachedData=null;document.getElementById('hem-north').classList.add('active');document.getElementById('hem-south').classList.remove('active');state.heathenYear=getCurrentHYForDate(state.focusJD,'north');populateYearSelect();renderView()}
+  });
+  document.getElementById('hem-south').addEventListener('click',()=>{
+    if(state.hemisphere!=='south'){state.hemisphere='south';state.cachedData=null;document.getElementById('hem-south').classList.add('active');document.getElementById('hem-north').classList.remove('active');state.heathenYear=getCurrentHYForDate(state.focusJD,'south');populateYearSelect();renderView()}
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+    if(e.key==='ArrowLeft')handlePrev();
+    if(e.key==='ArrowRight')handleNext();
+    if(e.key==='t'||e.key==='T'){const jd2=todayJD();state.focusJD=jd2;state.heathenYear=getCurrentHYForDate(jd2,state.hemisphere);state.cachedData=null;populateYearSelect();renderView()}
+    if(e.key==='d')setView('day');
+    if(e.key==='w')setView('week');
+    if(e.key==='m')setView('month');
+    if(e.key==='y')setView('year');
+  });
+
+  document.getElementById('copy-year').textContent = new Date().getFullYear();
+
+  renderView();
+}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
