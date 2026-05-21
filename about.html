@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Drengskapr Viking Spirit — The Viking Age ideal of honor, courage, and integrity. Learn about our mission and the code of the Drengr.">
+  <title>About — Drengskapr Viking Spirit</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .page-hero {
+      padding: 6rem 0 4rem; text-align: center;
+      background: linear-gradient(180deg, var(--ink) 0%, var(--ink-mid) 100%);
+      border-bottom: 1px solid rgba(184,134,11,.2);
+      overflow: hidden; position: relative;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse 60% 70% at 50% 30%, rgba(184,134,11,.07) 0%, transparent 65%);
+      pointer-events:none;
+    }
+    .page-hero-bg {
+      position:absolute; font-family:'Cinzel',serif;
+      font-size:min(45vw,420px); color:rgba(184,134,11,.03);
+      top:50%; left:50%; transform:translate(-50%,-48%);
+      pointer-events:none; line-height:1;
+    }
+    .page-eyebrow {
+      font-family:'Cinzel',serif; font-size:.58rem;
+      letter-spacing:.38em; text-transform:uppercase;
+      color:var(--gold); opacity:.65; margin-bottom:1rem;
+    }
+    .page-title {
+      font-family:'Cinzel Decorative',serif; font-weight:900;
+      font-size:clamp(2rem,6vw,4rem); color:var(--cream);
+      letter-spacing:.06em; text-transform:uppercase;
+      text-shadow:0 0 50px rgba(184,134,11,.15); margin-bottom:.5rem;
+    }
+    .page-sub { font-family:'Crimson Pro',serif; font-style:italic; font-size:1.1rem; color:var(--stone-light); margin-top:.4rem; }
+
+    /* ── MISSION ── */
+    .mission-section { padding: 7rem 0; background: var(--ink); }
+    .mission-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
+    .mission-label { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); opacity:.7; margin-bottom:1rem; }
+    .mission-title { font-family:'Cinzel Decorative',serif; font-weight:700; font-size:clamp(1.6rem,3.5vw,2.5rem); color:var(--cream); line-height:1.2; margin-bottom:1.2rem; }
+    .mission-title em { font-style:normal; color:var(--gold-bright); }
+    .mission-body { font-family:'Crimson Pro',serif; font-size:1.1rem; color:var(--stone-light); line-height:1.85; }
+    .mission-body p + p { margin-top:1rem; }
+    .quote-block { border-left:2px solid var(--gold); padding:.85rem 1.3rem; background:rgba(184,134,11,.04); margin:1.5rem 0; }
+    .quote-text { font-family:'Crimson Pro',serif; font-size:1.12rem; font-style:italic; color:var(--cream); line-height:1.7; }
+    .quote-source { font-family:'Cinzel',serif; font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-top:.4rem; opacity:.7; }
+
+    /* ── NINE NOBLE VIRTUES ── */
+    .virtues-section { padding:7rem 0; background:linear-gradient(180deg,var(--ink-mid) 0%,var(--ink) 100%); }
+    .virtues-header { text-align:center; margin-bottom:3.5rem; }
+    .virtues-title { font-family:'Cinzel Decorative',serif; font-weight:700; font-size:clamp(1.5rem,3vw,2.2rem); color:var(--cream); margin:.75rem 0; }
+    .virtues-sub { font-family:'Crimson Pro',serif; font-size:1.05rem; color:var(--stone-light); max-width:560px; margin:.75rem auto 0; line-height:1.7; }
+    .virtues-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+    .virtue-card {
+      background:rgba(20,15,8,.6); border:1px solid rgba(184,134,11,.18);
+      padding:1.8rem 1.5rem; text-align:center; position:relative; overflow:hidden;
+      transition:border-color .25s, transform .25s;
+    }
+    .virtue-card:hover { border-color:rgba(184,134,11,.4); transform:translateY(-2px); }
+    .virtue-num { font-family:'Cinzel',serif; font-size:.5rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); opacity:.5; margin-bottom:.5rem; }
+    .virtue-rune { font-family:'Cinzel',serif; font-size:1.8rem; color:var(--gold); opacity:.65; display:block; margin-bottom:.6rem; filter:drop-shadow(0 0 8px rgba(184,134,11,.3)); }
+    .virtue-name { font-family:'Cinzel',serif; font-weight:700; font-size:.82rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-bright); margin-bottom:.5rem; }
+    .virtue-body { font-family:'Crimson Pro',serif; font-size:.95rem; color:var(--stone-light); line-height:1.65; }
+
+    /* ── LEGACY ── */
+    .legacy-section { padding:7rem 0; background:var(--ink-mid); }
+    .legacy-content { max-width:760px; margin:0 auto; text-align:center; }
+    .legacy-title { font-family:'Cinzel Decorative',serif; font-weight:700; font-size:clamp(1.5rem,3.5vw,2.5rem); color:var(--cream); margin:1rem 0; }
+    .legacy-body { font-family:'Crimson Pro',serif; font-size:1.12rem; color:var(--stone-light); line-height:1.9; }
+    .legacy-body p + p { margin-top:1rem; }
+
+    /* ── TIMELINE ── */
+    .timeline-section { padding:7rem 0; background:var(--ink); }
+    .timeline-title-wrap { text-align:center; margin-bottom:3.5rem; }
+    .timeline-title { font-family:'Cinzel Decorative',serif; font-weight:700; font-size:clamp(1.4rem,3vw,2rem); color:var(--cream); margin:.75rem 0; }
+    .timeline { position:relative; max-width:700px; margin:0 auto; }
+    .timeline::before { content:''; position:absolute; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(180deg,transparent,rgba(184,134,11,.4),rgba(184,134,11,.4),transparent); transform:translateX(-50%); }
+    .timeline-item { display:grid; grid-template-columns:1fr 40px 1fr; gap:0; align-items:start; margin-bottom:3rem; }
+    .timeline-item:nth-child(even) .ti-content { grid-column:1; text-align:right; }
+    .timeline-item:nth-child(even) .ti-empty { grid-column:3; }
+    .ti-content { padding:.75rem 1.5rem; }
+    .ti-dot { width:40px; display:flex; align-items:flex-start; justify-content:center; padding-top:.55rem; }
+    .ti-dot-inner { width:12px; height:12px; background:var(--gold); border-radius:50%; box-shadow:0 0 12px rgba(184,134,11,.5); flex-shrink:0; }
+    .ti-era { font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); opacity:.65; margin-bottom:.3rem; }
+    .ti-title { font-family:'Cinzel',serif; font-weight:700; font-size:.85rem; letter-spacing:.1em; text-transform:uppercase; color:var(--cream); margin-bottom:.4rem; }
+    .ti-body { font-family:'Crimson Pro',serif; font-size:.95rem; color:var(--stone-light); line-height:1.65; }
+    .ti-empty {}
+
+    @media(max-width:900px) {
+      .mission-grid { grid-template-columns:1fr; gap:3rem; }
+      .virtues-grid { grid-template-columns:1fr 1fr; }
+      .timeline::before { left:20px; }
+      .timeline-item { grid-template-columns:40px 1fr; }
+      .timeline-item:nth-child(even) .ti-content { grid-column:2; text-align:left; }
+      .ti-empty { display:none; }
+    }
+    @media(max-width:600px) {
+      .mission-section,.virtues-section,.legacy-section,.timeline-section { padding:4rem 0; }
+      .virtues-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="site-nav">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-rune">ᛟ</span>
+    <div class="nav-logo-text">
+      <span class="nav-logo-title">Drengskapr</span>
+      <span class="nav-logo-sub">Viking Spirit</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="store.html">Store</a></li>
+    <li><a href="calendar.html">Calendar</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-social">
+    <a href="https://www.tiktok.com/@drengskaprvikingspirit" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.17 8.17 0 004.79 1.54V6.79a4.85 4.85 0 01-1.02-.1z"/></svg></a>
+    <a href="https://www.instagram.com/drengskaprvikingspirit" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+    <a href="https://www.facebook.com/DrengskaprVikingSpirit" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a href="https://www.youtube.com/channel/UCa0Oi4ZPYbxsdQSifrRPFBw" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+  </div>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="store.html">Store</a><a href="calendar.html">Calendar</a><a href="about.html" class="active">About</a><a href="contact.html">Contact</a>
+</div>
+
+<main class="page-content">
+
+  <section class="page-hero">
+    <div class="page-hero-bg">ᚺ</div>
+    <div class="container" style="position:relative;z-index:2">
+      <p class="page-eyebrow">ᚺ · Honor · Courage · Integrity · ᚺ</p>
+      <h1 class="page-title">About</h1>
+      <p class="page-sub">The Code of the Drengr</p>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="mission-section">
+    <div class="container">
+      <div class="mission-grid">
+        <div class="reveal">
+          <p class="mission-label">Our Mission</p>
+          <h2 class="mission-title">Celebrating the<br><em>Viking Legacy</em></h2>
+          <div class="mission-body">
+            <p>At Drengskapr Viking Spirit, we are dedicated to exploring and celebrating the timeless values that defined the Viking Age — values that remain as relevant and powerful today as they were a thousand years ago.</p>
+            <p>We believe that the code of the Drengr — honor, courage, integrity, loyalty, discipline — is not a relic of a bygone era. It is a living framework for how to move through the world: with backbone, with honesty, with generosity toward those who have earned your loyalty.</p>
+            <p>Through content, community, and the products we create, we aim to bring that spirit into the modern world — not as nostalgia, but as a genuine way of living.</p>
+          </div>
+          <div class="quote-block mt-2">
+            <p class="quote-text">"Better to live one day as a lion than a hundred years as a sheep."</p>
+            <p class="quote-source">— Norse Proverb</p>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="mission-label">What is Drengskapr?</p>
+          <h2 class="mission-title">The <em>Code</em></h2>
+          <div class="mission-body">
+            <p><strong style="color:var(--cream)">Drengskapr</strong> (Old Norse: the quality of a Drengr) was the highest praise the Norse could give a person. It encompassed far more than physical courage — it was moral courage, social responsibility, and consistent integrity.</p>
+            <p>A <em>drengr</em> was someone who could be trusted completely. Who spoke plainly and kept their word. Who showed up for their community and stood against injustice, even at personal cost.</p>
+            <p>The opposite — níðingr, a coward or oath-breaker — was the most serious condemnation in Old Norse society. To be called níðingr meant you had failed not just at a task, but at being a person.</p>
+            <p>That binary still resonates. In a world that rewards posturing and punishes honesty, the code of Drengskapr is a radical act.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NINE NOBLE VIRTUES -->
+  <section class="virtues-section">
+    <div class="container">
+      <div class="virtues-header reveal">
+        <p class="section-label">The Code</p>
+        <h2 class="virtues-title">Nine Virtues of the Drengr</h2>
+        <p class="virtues-sub">Drawn from the Hávamál and the sagas, these nine virtues form the backbone of Heathen ethics and the standard by which a Drengr is measured.</p>
+      </div>
+      <div class="virtues-grid">
+        <div class="virtue-card reveal reveal-delay-1">
+          <p class="virtue-num">I</p>
+          <span class="virtue-rune">ᚺ</span>
+          <h3 class="virtue-name">Honor</h3>
+          <p class="virtue-body">Live so that your name is spoken with respect. Your reputation is your most lasting legacy — build it through consistent action, not words.</p>
+        </div>
+        <div class="virtue-card reveal reveal-delay-2">
+          <p class="virtue-num">II</p>
+          <span class="virtue-rune">ᚲ</span>
+          <h3 class="virtue-name">Courage</h3>
+          <p class="virtue-body">Face hardship without flinching. Speak truth when it is unwelcome. The coward finds many reasons to stay silent — the Drengr speaks anyway.</p>
+        </div>
+        <div class="virtue-card reveal reveal-delay-3">
+          <p class="virtue-num">III</p>
+          <span class="virtue-rune">ᛁ</span>
+          <h3 class="virtue-name">Integrity</h3>
+          <p class="virtue-body">Be the same person in the dark as in the light. What you do when no one is watching defines your character more than any public act.</p>
+        </div>
+        <div class="virtue-card reveal reveal-delay-1">
+          <p class="virtue-num">IV</p>
+          <span class="virtue-rune">ᛚ</span>
+          <h3 class="virtue-name">Loyalty</h3>
+          <p class="virtue-body">Stand by your people. The Norse valued kinship above almost all else — to betray your kin was to betray yourself. Choose your bonds carefully; honor them absolutely.</p>
+        </div>
+        <div class="virtue-card reveal reveal-delay-2">
+          <p class="virtue-num">V</p>
+          <span class="virtue-rune">ᛞ</span>
+          <h3 class="virtue-name">Discipline</h3>
+          <p class="virtue-body">Excellence does not arrive uninvited. The Viking warrior, craftsman, and farmer all understood that mastery required relentless practice and self-control.</p>
+        </div>
+        <div class="virtue-card reveal reveal-delay-3">
+          <p class="virtue-num">VI</p>
+          <span class="virtue-rune">ᚹ</span>
+          <h3 class="virtue-name">Wisdom</h3>
+          <p class="virtue-body">Odin sacrificed an eye for wisdom. The Hávamál is a meditation on knowing — when to speak, when to be silent, when to act, when to wait. Seek understanding relentlessly.</p>
+        </div>
+        <div class="virtue-card reveal reveal-delay-1">
+          <p class="virtue-num">VII</p>
+          <span class="virtue-rune">ᚷ</span>
+          <h3 class="virtue-name">Generosity</h3>
+          <p class="virtue-body">The miser was scorned in the Norse world. Wealth that is hoarded rots; wealth that is shared builds bonds, earns loyalty, and sustains community.</p>
+        </div>
+        <div class="virtue-card reveal reveal-delay-2">
+          <p class="virtue-num">VIII</p>
+          <span class="virtue-rune">ᛈ</span>
+          <h3 class="virtue-name">Perseverance</h3>
+          <p class="virtue-body">The saga heroes did not succeed because hardship did not find them — it found them constantly. They succeeded because they kept going when lesser people stopped.</p>
+        </div>
+        <div class="virtue-card reveal reveal-delay-3">
+          <p class="virtue-num">IX</p>
+          <span class="virtue-rune">ᚠ</span>
+          <h3 class="virtue-name">Industriousness</h3>
+          <p class="virtue-body">The Norse respected those who built, created, and worked with their hands and minds. Idleness was regarded with contempt. Make something that matters.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEGACY -->
+  <section class="legacy-section">
+    <div class="container">
+      <div class="legacy-content">
+        <div class="reveal">
+          <p class="section-label">The Legacy</p>
+          <h2 class="legacy-title">Why the Viking Age Still Matters</h2>
+          <div class="legacy-body" style="text-align:left;margin-top:1.5rem">
+            <p>The Vikings were not the cartoonish villains of Hollywood nor the sanitized heroes of modern mythology. They were complex — traders and explorers as much as warriors, poets as much as fighters, builders of the most sophisticated legal and political systems of their age.</p>
+            <p>They sailed to North America 500 years before Columbus. They established trade routes stretching from Scandinavia to Constantinople. They wrote poetry of astonishing sophistication — the Eddas and the skaldic verse remain among the great literary achievements of any culture.</p>
+            <p>And through it all, they were guided by a set of values — Drengskapr — that rewarded the kind of person who could be depended upon completely. Not the strongest, not the richest, but the most honourable.</p>
+            <p>That is the legacy we carry forward.</p>
+          </div>
+        </div>
+        <div class="quote-block mt-3 reveal reveal-delay-1">
+          <p class="quote-text">"Cattle die, kinsmen die, the self must also die; I know one thing which never dies: the reputation of each dead man."</p>
+          <p class="quote-source">— Hávamál, Stanza 77</p>
+        </div>
+        <div class="mt-2 reveal reveal-delay-2">
+          <a href="contact.html" class="btn">Connect With Us ✦</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="site-footer">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand-name">Drengskapr Viking Spirit</p>
+      <p class="footer-brand-tagline">Stay Drengr. Live with Honor.</p>
+      <p class="footer-brand-body">Celebrating the enduring legacy of the Vikings — their values, their history, and the cultural heritage that continues to inspire.</p>
+      <div class="footer-social">
+        <a href="https://www.tiktok.com/@drengskaprvikingspirit" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.17 8.17 0 004.79 1.54V6.79a4.85 4.85 0 01-1.02-.1z"/></svg></a>
+        <a href="https://www.instagram.com/drengskaprvikingspirit" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a href="https://www.facebook.com/DrengskaprVikingSpirit" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a href="https://www.youtube.com/channel/UCa0Oi4ZPYbxsdQSifrRPFBw" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <p class="footer-col-title">Navigate</p>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="calendar.html">Heathen Calendar</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Connect</p>
+      <ul class="footer-links">
+        <li><a href="https://www.tiktok.com/@drengskaprvikingspirit" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="https://www.instagram.com/drengskaprvikingspirit" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.facebook.com/DrengskaprVikingSpirit" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="https://www.youtube.com/channel/UCa0Oi4ZPYbxsdQSifrRPFBw" target="_blank" rel="noopener">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&copy; <span id="footer-year"></span> Drengskapr Viking Spirit, LLC · All Rights Reserved</p>
+    <p class="footer-copy">Designed with Honor ✦</p>
+  </div>
+</footer>
+
+<script src="assets/main.js"></script>
+</body>
+</html>
